@@ -1,0 +1,21 @@
+TagBoa Android Application.
+
+=================
+
+The list of open-source packages.
+
+* ActionBarSherlock
+- https://github.com/JakeWharton/ActionBarSherlock
+- Apache License, Version 2.0
+
+* UrlImageViewHelper
+- https://github.com/koush/UrlImageViewHelper
+- Apache License, Version 2.0
+
+* many stackoverflow.com articles
+- http://www.stackoverflow.com
+- CC License, http://creativecommons.org/licenses/by-sa/3.0/
+
+** See more information about Apache Version 2.0 Lincense at http://www.apache.org/licenses/LICENSE-2.0.html
+** See more information about CC License at http://creativecommons.org/licenses/
+

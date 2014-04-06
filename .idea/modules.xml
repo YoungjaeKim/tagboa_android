@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/project/project.iml" filepath="$PROJECT_DIR$/project/project.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tagboa.iml" filepath="$PROJECT_DIR$/tagboa.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tagboa_android.iml" filepath="$PROJECT_DIR$/tagboa_android.iml" />
       <module fileurl="file://$PROJECT_DIR$/tagboa_android.iml" filepath="$PROJECT_DIR$/tagboa_android.iml" />
     </modules>
   </component>

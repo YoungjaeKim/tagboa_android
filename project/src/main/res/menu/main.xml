@@ -2,7 +2,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="net.tagboa.app.MainActivity" >
     
-    <item android:id="@+id/action_settings"
+    <item android:id="@+id/action_download"
+        android:title="@string/menuDownloadDatabase"
+         />
+	<item android:id="@+id/action_settings"
         android:title="@string/action_settings"
          />
 </menu>

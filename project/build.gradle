@@ -39,6 +39,8 @@ android {
             aidl.srcDirs = ['src/main/java']
             renderscript.srcDirs = ['src/main/java']
             res.srcDirs = ['src/main/res']
+            assets.srcDirs = ['src/main/assets']
+
         }
         packagingOptions {
             exclude 'META-INF/DEPENDENCIES.txt'
@@ -102,6 +104,7 @@ android {
 dependencies {
     compile 'com.android.support:support-v4:19.0.+'
     compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
+    compile 'net.sf.opencsv:opencsv:2.+'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
     compile('org.simpleframework:simple-xml:2.7.+'){
