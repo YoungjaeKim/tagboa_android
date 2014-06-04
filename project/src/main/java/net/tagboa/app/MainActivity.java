@@ -4,52 +4,32 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.Toast;
-import com.actionbarsherlock.app.SherlockActivity;
-import com.csvreader.CsvReader;
+import com.androidquery.AQuery;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import net.tagboa.app.model.VideoItem;
 import net.tagboa.app.net.FileDownloadTask;
+import net.tagboa.app.net.TagboaApi;
+import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
-public class MainActivity extends SherlockActivity {
+public class MainActivity extends BaseActivity implements View.OnClickListener {
 	private static final String TAG = "MainActivity";
 	public static String ApplicationName = "TagBoa";
+	public static String BaseUrl = "app.tagboa.net";
+	public static String BaseRestUrl = "app.tagboa.net/api";
 	public static ArrayList<VideoItem> VideoItems;
-
-	// Youngjae (2014-04-06 12:25:03) : 구글에서 직접 다운로드받는 것은 실패. 참고: http://stackoverflow.com/a/2845257/361100
-//	public static String DataUrlKey = "0AgSMns-6evXtdHhfa0tSbkF6UmM3RkNmNDJRbVNpcUE";
-//	public static String DataWebUrl = "https://docs.google.com/spreadsheet/ccc?key=%s&usp=drive_web#gid=0";
-//	public static String DataCSVUrl = "https://docs.google.com/feeds/download/spreadsheets/Export?key=%s&exportFormat=csv&gid=0";
+	AQuery aq = new AQuery(this);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
-		// 데이터 로딩.
-		try {
-			InputStream inputStream = getResources().openRawResource(R.raw.data);
-			byte[] b = new byte[inputStream.available()];
-			inputStream.read(b);
-
-			// http://www.csvreader.com/java_csv_samples.php
-			CsvReader item = new CsvReader(inputStream, Charset.forName("utf8"));
-			item.readHeaders();
-
-			VideoItems = new ArrayList<VideoItem>();
-			while (item.readRecord()) {
-				VideoItems.add(new VideoItem(item.get(0), item.get(1), item.get(2), item.get(3), item.get(4)));
-			}
-			item.close();
-		} catch (IOException e) {
-			MainActivity.ShowToast(MainActivity.this, e.getMessage());
-			e.printStackTrace();
-		}
-
 	}
 
 	@Override
@@ -76,6 +56,7 @@ public class MainActivity extends SherlockActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
+
 	/**
 	 * 토스트 메시지.
 	 *
@@ -94,7 +75,7 @@ public class MainActivity extends SherlockActivity {
 	 * @param isCenter
 	 */
 	public static void ShowToast(Context context, String message, boolean isCenter) {
-		Toast toast = Toast.makeText(context, context.getString(R.string.app_name) + message, Toast.LENGTH_SHORT);
+		Toast toast = Toast.makeText(context, String.format("%s: %s", context.getString(R.string.app_name), message), Toast.LENGTH_SHORT);
 		if (isCenter)
 			toast.setGravity(Gravity.CENTER, 0, 0);
 		toast.show();
@@ -114,5 +95,52 @@ public class MainActivity extends SherlockActivity {
 			MainActivity.ShowToast(MainActivity.this, message);
 		}
 	};
+
+	private String _token;
+	private String _username;
+
+	@Override
+	public void onClick(View view) {
+		switch (view.getId()) {
+			case R.id.buttonLogin: {
+				// 로그인 테스트.
+				TagboaApi.Login(MainActivity.this, "tester", "tes2ter", new JsonHttpResponseHandler() {
+					@Override
+					public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+						super.onSuccess(statusCode, headers, response);
+						try {
+							_token = response.getString("access_token");
+							_username = response.getString("userName");
+							_sharedPrefs.edit().putString("Authentication", response.toString()).commit();
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+
+					@Override
+					public void onFailure(int statusCode, Throwable e, JSONObject errorResponse) {
+						super.onFailure(statusCode, e, errorResponse);
+						if(statusCode == 400){
+							MainActivity.ShowToast(MainActivity.this, "아이디 또는 비밀번호가 틀렸습니다.");
+						}
+					}
+				});
+
+			}
+			case R.id.buttonGet: {
+				try {
+					TagboaApi.GetItems(MainActivity.this, _username, new JsonHttpResponseHandler() {
+
+					});
+				} catch (JSONException e) {
+					e.printStackTrace();
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
+
+			}
+			break;
+		}
+	}
 
 }

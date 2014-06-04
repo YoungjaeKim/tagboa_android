@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- File created by the Android Action Bar Style Generator
+
+     Copyright (C) 2011 The Android Open Source Project
+     Copyright (C) 2012 readyState Software Ltd
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+  
+          http://www.apache.org/licenses/LICENSE-2.0
+  
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<resources>
+	<!-- ActionBarSherlock 에서 자동생성 -->
+    <color name="pressed_bapul">#CC33B5E5</color>
+    <color name="gray_pressed_background_bapul">#EAEAEA</color>
+    <color name="gray_background_bapul">#F3F3F3</color>
+    <color name="blue_key_bapul">#2FBADD</color>
+    <color name="gray_very_light_text_bapul">#FFA6A6A6</color>
+    <color name="gray_time_bapul">#8D8D8D</color>
+    <color name="gray_answer_background_strong_bapul">#787878</color>
+    <color name="gray_answer_background_bapul">#e0e0e0</color>
+    <color name="gray_light_background_bapul">#ffd7d7d7</color>
+    <color name="gray_dark_background_bapul">#999999</color>
+    <color name="orange_answer_selected_bapul">#f67742</color>
+    <color name="orange_answer_selected_mid_bapul">#f6885a</color>
+    <color name="orange_answer_selected_light_bapul">#fdf3ee</color>
+    <color name="gray_light_text_bapul">#555555</color>
+    <color name="gray_text_bapul">#333333</color>
+    <color name="blue_light_background">#e1f9ff</color>
+
+	<!-- 바풀 개발 중 추가된 컬러. -->
+	<color name="dark_slate_gray">#2F4F4F</color>
+	<color name="gray_2">#AFAFAF</color>
+	<color name="gray_1">#C0C0C0</color>
+	<color name="black">#000000</color>
+	<color name="blue_pressed_bapul">#cc235889</color>
+	<color name="blue_button_disabled_bapul">#c0eaf5</color>
+	<color name="gray_title_bapul">#FF9C9C9C</color>
+	<color name="gray_button_bapul">#FFA6A6A6</color>
+	<color name="gray_button_disabled_bapul">#d2d2d2</color>
+	<color name="gray_button_pressed_bapul">#ff525252</color>
+	<color name="gray_border_bapul">#ffd9d9d9</color>
+	<color name="gray_background_reply_function_bapul">#f8f8f8</color>
+	<color name="gray_border_splitter_bapul">#eaeaea</color>
+	<color name="shadow_background_bapul">#AA000000</color>
+	<color name="red_bapul">#ffcc0000</color>
+</resources>

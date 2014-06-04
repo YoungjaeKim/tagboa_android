@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">TagBoa</string>
+    <string name="app_name">태그보아</string>
     <string name="action_settings">Settings</string>
 	<string name="menuDownloadDatabase">원본데이터 받기</string>
 	<string name="menuAbout">이 앱에 대하여</string>
