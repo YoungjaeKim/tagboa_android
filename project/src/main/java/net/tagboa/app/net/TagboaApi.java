@@ -61,7 +61,7 @@ public class TagboaApi {
 	public static void InitializeHttpClient(final Context context, final OnRefreshListener listener) {
 		if (HttpClient == null) {
 			HttpClient = new AsyncHttpClient();
-			HttpClient.addHeader("X-Requested-With", "XMLHttpRequest");
+//			HttpClient.addHeader("X-Requested-With", "XMLHttpRequest");
 			HttpClient.getHttpClient().getParams().setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, false);
 		}
 		if (BapulCookieStore == null)
@@ -77,6 +77,7 @@ public class TagboaApi {
 		if (!"".equals(sharedPrefs.getString("Authentication", ""))) {
 			try {
 				JSONObject jsonObject = new JSONObject(sharedPrefs.getString("Authentication", ""));
+				HttpClient.removeHeader("Authorization");
 				HttpClient.addHeader("Authorization", "Bearer " + jsonObject.getString("access_token"));
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -110,7 +111,7 @@ public class TagboaApi {
 		jsonParams.put("ConfirmPassword", confirmPassword);
 		StringEntity entity = new StringEntity(jsonParams.toString());
 
-		HttpClient.post(context, TagboaUrl.LOGIN.toString(false, false), entity, "application/json", jsonHttpResponseHandler);
+		HttpClient.post(context, TagboaUrl.LOGIN.toString(false, false), entity, "application/json; charset=utf-8", jsonHttpResponseHandler);
 	}
 
 	/**
@@ -134,6 +135,7 @@ public class TagboaApi {
 
 		HttpClient.post(context, TagboaUrl.LOGIN.toString(false, false), params, jsonHttpResponseHandler);
 	}
+	// Youngjae (2014-06-05 02:47:09) :
 
 	public static void GetItems(Context context, String username, JsonHttpResponseHandler jsonHttpResponseHandler) throws JSONException, UnsupportedEncodingException {
 		if (HttpClient == null)
@@ -144,7 +146,7 @@ public class TagboaApi {
 		params.put("application", ApplicationName((TagboaClient) context));
 		params.put("username", username);
 
-		HttpClient.get(context, TagboaUrl.ITEMS.toString(), params, jsonHttpResponseHandler);
+		HttpClient.get(context, TagboaUrl.ITEM.toString(), params, jsonHttpResponseHandler);
 	}
 
 	public static void PostItem(Context context, TagboaItem item, JsonHttpResponseHandler jsonHttpResponseHandler) throws JSONException, UnsupportedEncodingException {
@@ -152,10 +154,7 @@ public class TagboaApi {
 			InitializeHttpClient(context);
 
 		JSONObject jsonParams = item.toJson();
-//		jsonParams.put("application", ApplicationName((TagboaClient) context));
-//		jsonParams.put("ConfirmPassword", item);
-		StringEntity entity = new StringEntity(jsonParams.toString());
-
-		HttpClient.post(context, TagboaUrl.LOGIN.toString(), entity, "application/json", jsonHttpResponseHandler);
+		StringEntity entity = new StringEntity(jsonParams.toString(), "UTF-8");
+		HttpClient.post(context, TagboaUrl.ITEM.toString(), entity, "application/json", jsonHttpResponseHandler);
 	}
 }

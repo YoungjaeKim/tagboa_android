@@ -8,7 +8,7 @@ public enum TagboaUrl {
 	ROOT(""),
 	ITEMS("/items"),
 	TAG("/tag"),
-	URL_LINK("/urllink"), LOGIN("/token");
+	URL_LINK("/urllink"), LOGIN("/token"), ITEM("/item");
 
 	/**
 	 * 생성자.

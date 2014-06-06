@@ -5,6 +5,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 /**
@@ -28,7 +29,7 @@ public class TagboaItem {
 	/// <summary>
 	/// 등급
 	/// </summary>
-	public double Rating;
+	public Double Rating;
 	/// <summary>
 	/// 부가 설명
 	/// </summary>
@@ -53,7 +54,7 @@ public class TagboaItem {
 	/// </summary>
 	public List<TagboaUrlLink> Links;
 
-	public JSONObject toJson() throws JSONException {
+	public JSONObject toJson() throws JSONException, UnsupportedEncodingException {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("ID", ID);
 		jsonObject.put("Title", Title);
@@ -80,5 +81,19 @@ public class TagboaItem {
 			jsonObject.put("Links", jsonTopics);
 		}
 		return jsonObject;
+	}
+
+	public static TagboaItem fromJson(JSONObject jsonObject) throws JSONException {
+		TagboaItem item = new TagboaItem();
+		item.ID = jsonObject.getInt("ID");
+		item.Title = jsonObject.getString("Title");
+		item.Genre = jsonObject.getString("Genre");
+		item.Author = jsonObject.getString("Author");
+		item.Rating = jsonObject.getDouble("Rating");
+		item.Description = jsonObject.getString("Description");
+		item.ReadCount = jsonObject.getInt("ReadCount");
+		item.Timestamp = DateTime.parse(jsonObject.getString("Timestamp"));
+		// TODO: tag, links 는 안함.
+		return item;
 	}
 }

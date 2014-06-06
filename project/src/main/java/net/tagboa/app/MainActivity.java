@@ -5,20 +5,29 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.androidquery.AQuery;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.tokenautocomplete.FilteredArrayAdapter;
+import com.tokenautocomplete.TokenCompleteTextView;
+import net.tagboa.app.model.TagboaItem;
+import net.tagboa.app.model.TagboaTag;
 import net.tagboa.app.model.VideoItem;
 import net.tagboa.app.net.FileDownloadTask;
 import net.tagboa.app.net.TagboaApi;
+import net.tagboa.app.view.TagCompletionView;
 import org.apache.http.Header;
+import org.joda.time.DateTime;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener, TagCompletionView.TokenListener  {
 	private static final String TAG = "MainActivity";
 	public static String ApplicationName = "TagBoa";
 	public static String BaseUrl = "app.tagboa.net";
@@ -26,10 +35,39 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 	public static ArrayList<VideoItem> VideoItems;
 	AQuery aq = new AQuery(this);
 
+	TagCompletionView completionView;
+	TagboaTag[] tagboaTags;
+	ArrayAdapter<TagboaTag> adapter;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+
+		tagboaTags = new TagboaTag[]{
+				new TagboaTag("Marshall Weir"),
+				new TagboaTag("Margaret Smith"),
+				new TagboaTag("Max Jordan"),
+				new TagboaTag("Meg Peterson"),
+				new TagboaTag("Amanda Johnson"),
+				new TagboaTag("Terry Anderson")
+		};
+
+		adapter = new FilteredArrayAdapter<TagboaTag>(this, android.R.layout.simple_list_item_1, tagboaTags) {
+			@Override
+			protected boolean keepObject(TagboaTag obj, String mask) {
+				mask = mask.toLowerCase();
+				return obj.title.toLowerCase().contains(mask);
+			}
+		};
+
+		completionView = (TagCompletionView)findViewById(R.id.searchView);
+		completionView.allowDuplicates(false);
+		completionView.setTokenClickStyle(TokenCompleteTextView.TokenClickStyle.Delete);
+		completionView.setAdapter(adapter);
+		completionView.setTokenListener(this);
+
 	}
 
 	@Override
@@ -104,7 +142,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 		switch (view.getId()) {
 			case R.id.buttonLogin: {
 				// 로그인 테스트.
-				TagboaApi.Login(MainActivity.this, "tester", "tes2ter", new JsonHttpResponseHandler() {
+				TagboaApi.Login(MainActivity.this, "tester", "tester", new JsonHttpResponseHandler() {
 					@Override
 					public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 						super.onSuccess(statusCode, headers, response);
@@ -112,6 +150,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 							_token = response.getString("access_token");
 							_username = response.getString("userName");
 							_sharedPrefs.edit().putString("Authentication", response.toString()).commit();
+							TagboaApi.InitializeHttpClient(MainActivity.this);
+							MainActivity.ShowToast(MainActivity.this, String.format("%s 로그인", _username));
 						} catch (JSONException e) {
 							e.printStackTrace();
 						}
@@ -120,27 +160,97 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 					@Override
 					public void onFailure(int statusCode, Throwable e, JSONObject errorResponse) {
 						super.onFailure(statusCode, e, errorResponse);
-						if(statusCode == 400){
+						if (statusCode == 400) {
 							MainActivity.ShowToast(MainActivity.this, "아이디 또는 비밀번호가 틀렸습니다.");
 						}
 					}
 				});
 
 			}
+			break;
 			case R.id.buttonGet: {
 				try {
 					TagboaApi.GetItems(MainActivity.this, _username, new JsonHttpResponseHandler() {
+						@Override
+						public void onSuccess(JSONArray response) {
+							super.onSuccess(response);
+							MainActivity.ShowToast(MainActivity.this, String.valueOf(response.length()) + "개 있습니다.");
+						}
 
+						@Override
+						public void onFailure(Throwable e, JSONObject errorResponse) {
+							super.onFailure(e, errorResponse);
+							MainActivity.ShowToast(MainActivity.this, "조회 실패");
+						}
 					});
 				} catch (JSONException e) {
 					e.printStackTrace();
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
 				}
-
 			}
 			break;
+			case R.id.buttonAddTag: {
+				try {
+					TagboaItem item = new TagboaItem();
+					item.Title = "테스트";
+					item.Genre = "다큐";
+					item.Author = _username;
+					item.Rating = 0.0d;
+					item.Description = "설명";
+					item.ReadCount = 0;
+					item.Timestamp = DateTime.now();
+
+					TagboaApi.PostItem(MainActivity.this, item, new JsonHttpResponseHandler() {
+
+						@Override
+						public void onSuccess(JSONObject response) {
+							super.onSuccess(response);
+						}
+
+						@Override
+						public void onSuccess(JSONArray response) {
+							super.onSuccess(response);
+						}
+
+						@Override
+						public void onFailure(Throwable e, JSONObject errorResponse) {
+							super.onFailure(e, errorResponse);
+						}
+					});
+				} catch (JSONException e) {
+					e.printStackTrace();
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
+			}
+
+			break;
 		}
+	}
+
+
+	private void updateTokenConfirmation() {
+		StringBuilder sb = new StringBuilder("Current tokens:\n");
+		for (Object token: completionView.getObjects()) {
+			sb.append(token.toString());
+			sb.append("\n");
+		}
+
+		((TextView)findViewById(R.id.tokens)).setText(sb);
+	}
+
+
+	@Override
+	public void onTokenAdded(Object token) {
+		updateTokenConfirmation();
+		System.out.println();
+	}
+
+
+	@Override
+	public void onTokenRemoved(Object token) {
+		updateTokenConfirmation();
 	}
 
 }
