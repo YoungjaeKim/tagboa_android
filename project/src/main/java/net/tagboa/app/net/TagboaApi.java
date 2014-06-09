@@ -157,4 +157,21 @@ public class TagboaApi {
 		StringEntity entity = new StringEntity(jsonParams.toString(), "UTF-8");
 		HttpClient.post(context, TagboaUrl.ITEM.toString(), entity, "application/json", jsonHttpResponseHandler);
 	}
+
+	public static void GetTags(Context context, String query, String locale, JsonHttpResponseHandler jsonHttpResponseHandler) {
+
+		if (HttpClient == null)
+			InitializeHttpClient(context);
+
+		// 폰의 지역정보 가져오기: http://stackoverflow.com/a/4212417/361100
+		if (locale != null && !"".equals(locale))
+			if (!locale.equals("en_US") && !locale.equals("ja_JP") && !locale.equals("ko_KR"))
+				locale = "ko_KR";
+
+		RequestParams params = new RequestParams();
+		if (locale != null && !"".equals(locale))
+			params.put("locale", locale);
+		params.put("query", query);
+		HttpClient.get(TagboaUrl.TAGS.toString(), params, jsonHttpResponseHandler);
+	}
 }

@@ -2,6 +2,8 @@ package net.tagboa.app;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -12,9 +14,7 @@ import com.androidquery.AQuery;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.tokenautocomplete.FilteredArrayAdapter;
 import com.tokenautocomplete.TokenCompleteTextView;
-import net.tagboa.app.model.TagboaItem;
-import net.tagboa.app.model.TagboaTag;
-import net.tagboa.app.model.VideoItem;
+import net.tagboa.app.model.*;
 import net.tagboa.app.net.FileDownloadTask;
 import net.tagboa.app.net.TagboaApi;
 import net.tagboa.app.view.TagCompletionView;
@@ -26,6 +26,7 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener, TagCompletionView.TokenListener  {
 	private static final String TAG = "MainActivity";
@@ -36,23 +37,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 	AQuery aq = new AQuery(this);
 
 	TagCompletionView completionView;
-	TagboaTag[] tagboaTags;
+	ArrayList<TagboaTag> tagboaTags = new ArrayList<TagboaTag>();
+	ArrayList<TagboaTag> selectedTags = new ArrayList<TagboaTag>();
 	ArrayAdapter<TagboaTag> adapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
-
-		tagboaTags = new TagboaTag[]{
-				new TagboaTag("Marshall Weir"),
-				new TagboaTag("Margaret Smith"),
-				new TagboaTag("Max Jordan"),
-				new TagboaTag("Meg Peterson"),
-				new TagboaTag("Amanda Johnson"),
-				new TagboaTag("Terry Anderson")
-		};
 
 		adapter = new FilteredArrayAdapter<TagboaTag>(this, android.R.layout.simple_list_item_1, tagboaTags) {
 			@Override
@@ -67,6 +59,22 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 		completionView.setTokenClickStyle(TokenCompleteTextView.TokenClickStyle.Delete);
 		completionView.setAdapter(adapter);
 		completionView.setTokenListener(this);
+
+		completionView.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+			}
+
+			@Override
+			public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+				String newText = charSequence.toString();
+				SearchTopics(newText);
+			}
+
+			@Override
+			public void afterTextChanged(Editable editable) {
+			}
+		});
 
 	}
 
@@ -224,7 +232,50 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 					e.printStackTrace();
 				}
 			}
+			break;
+			case R.id.buttonAddItem:
+			{
+				try {
+					TagboaItem item = new TagboaItem();
+					item.Title = "태그 넣은 테스트" + DateTime.now();
+					item.Genre = "다큐";
+					item.Author = _username;
+					item.Rating = 0.0d;
+					item.Description = "설명 없어요!";
+					item.ReadCount = 0;
+					item.Timestamp = DateTime.now();
+					item.Tags = selectedTags;
 
+					item.Links = new ArrayList<TagboaUrlLink>();
+					TagboaUrlLink link = new TagboaUrlLink();
+					link.Address = "http://www.ebs.co.kr";
+					link.IsHidden = false;
+					link.Status = TagboaUrlLinkStatus.Normal;
+					item.Links.add(link);
+
+					TagboaApi.PostItem(MainActivity.this, item, new JsonHttpResponseHandler() {
+
+						@Override
+						public void onSuccess(JSONObject response) {
+							super.onSuccess(response);
+						}
+
+						@Override
+						public void onSuccess(JSONArray response) {
+							super.onSuccess(response);
+						}
+
+						@Override
+						public void onFailure(Throwable e, JSONObject errorResponse) {
+							super.onFailure(e, errorResponse);
+						}
+					});
+				} catch (JSONException e) {
+					e.printStackTrace();
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
+			}
 			break;
 		}
 	}
@@ -232,7 +283,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
 	private void updateTokenConfirmation() {
 		StringBuilder sb = new StringBuilder("Current tokens:\n");
+		selectedTags.clear();
 		for (Object token: completionView.getObjects()) {
+			selectedTags.add((TagboaTag) token);
 			sb.append(token.toString());
 			sb.append("\n");
 		}
@@ -251,6 +304,48 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 	@Override
 	public void onTokenRemoved(Object token) {
 		updateTokenConfirmation();
+	}
+
+
+	/**
+	 * 토픽 검색
+	 *
+	 * @param q 토픽 검색어.
+	 */
+	public void SearchTopics(String q) {
+		q = q.replaceAll("[ㄱ-ㅣ]", ""); // 단모음,단자음 입력부분 제거.
+		if (q.length() < 1)
+			return;
+
+		String locale = _sharedPrefs.getString("locale", Locale.getDefault().toString());
+
+		TagboaApi.GetTags(MainActivity.this, q, locale, new SearchTopicJsonHttpResponseHandler());
+	}
+
+	/**
+	 * 토픽 검색 이벤트 핸들러.
+	 */
+	private class SearchTopicJsonHttpResponseHandler extends JsonHttpResponseHandler {
+		@Override
+		public void onSuccess(JSONArray message) {
+			try {
+				if(tagboaTags == null)
+					tagboaTags = new ArrayList<TagboaTag>();
+				tagboaTags.clear();
+				for (int i=0; i < message.length() ; i++)
+					tagboaTags.add(TagboaTag.fromJson(message.getJSONObject(i)));
+
+				if (tagboaTags != null && tagboaTags.size() > 0) {
+					MainActivity.this.runOnUiThread(new Runnable() {
+						public void run() {
+							adapter.notifyDataSetChanged();
+						}
+					});
+				}
+			} catch (JSONException e) {
+				Log.e("Bapul", "searchTopics" + e.getMessage());
+			}
+		}
 	}
 
 }

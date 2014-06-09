@@ -35,7 +35,7 @@
 			android:id="@+id/searchView"
 			android:layout_width="match_parent"
 			android:layout_height="50dp"
-			android:layout_below="@+id/buttonAddTag"
+			android:layout_below="@+id/buttonAddItem"
 			android:layout_alignParentRight="true"
 			android:layout_alignParentEnd="true"/>
 
@@ -63,9 +63,19 @@
 	<Button
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="내 스크랩 추가"
+			android:text="태그 추가"
 			android:id="@+id/buttonAddTag"
 			android:layout_below="@+id/buttonGet"
+			android:layout_alignParentLeft="true"
+			android:onClick="onClick"
+			android:layout_alignParentStart="true"/>
+
+	<Button
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="아이템 추가"
+			android:id="@+id/buttonAddItem"
+			android:layout_below="@+id/buttonAddTag"
 			android:layout_alignParentLeft="true"
 			android:onClick="onClick"
 			android:layout_alignParentStart="true"/>

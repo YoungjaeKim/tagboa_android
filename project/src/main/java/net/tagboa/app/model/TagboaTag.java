@@ -48,7 +48,7 @@ public class TagboaTag implements Serializable {
 		jsonObject.put("Title", title);
 		jsonObject.put("Count", count);
 		jsonObject.put("Locale", locale);
-		jsonObject.put("Parent", parent.toJson());
+		jsonObject.put("Parent", parent != null ? parent.toJson() : null);
 		jsonObject.put("Group", group);
 		jsonObject.put("IsCurricular", isCurricular);
 		return jsonObject;
@@ -57,5 +57,20 @@ public class TagboaTag implements Serializable {
 	@Override
 	public String toString() {
 		return group == null ? title : String.format("%s (%s)", title, String.valueOf(group));
+	}
+
+	public static TagboaTag fromJson(JSONObject jsonObject) throws JSONException {
+		TagboaTag tag = new TagboaTag();
+		tag.id = jsonObject.getInt("ID");
+		tag.title = jsonObject.getString("Title");
+		tag.count = jsonObject.getInt("Count");
+		tag.locale = jsonObject.getString("Locale");
+		if (!jsonObject.isNull("Parent"))
+			tag.parent = TagboaTag.fromJson(jsonObject.getJSONObject("Parent"));
+		if (!jsonObject.isNull("Group"))
+			tag.group = jsonObject.getInt("Group");
+		tag.isCurricular = jsonObject.getBoolean("IsCurricular");
+
+		return tag;
 	}
 }
