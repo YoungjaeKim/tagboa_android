@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:tools="http://schemas.android.com/tools"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:id="@+id/scrollView"
+		android:background="@color/gray_background_tagboa"
+		tools:context=".page.login.LoginActivity">
+
+	<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical">
+
+		<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"
+				android:id="@+id/linearLayoutLogin">
+
+			<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:background="#ffffff"
+					android:layout_marginBottom="12dp"
+					android:padding="0dp"
+					android:orientation="vertical"
+					android:layout_marginLeft="20dp"
+					android:layout_marginRight="10dp"
+					android:layout_marginTop="20dp"
+					>
+
+				<RelativeLayout
+
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginTop="10dp"
+						android:layout_marginLeft="15dp"
+						android:layout_marginRight="10dp"
+						android:layout_marginBottom="12dp"
+						>
+
+					<LinearLayout
+							android:id="@+id/linearLayoutLoginTopField"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:background="#ffffff"
+							android:orientation="vertical"
+							android:layout_marginRight="100dp">
+
+						<EditText
+								android:id="@+id/editId"
+								android:layout_width="match_parent"
+								android:layout_height="45dp"
+								android:paddingLeft="10dp"
+								android:inputType="textEmailAddress"
+								android:maxLength="20"
+								android:singleLine="true"
+								android:imeOptions="actionNext"
+								android:hint="@string/hintId"
+								android:textColor="@color/gray_text_tagboa"
+								/>
+
+						<EditText
+								android:id="@+id/editPw"
+								android:layout_width="match_parent"
+								android:layout_height="45dp"
+								android:paddingLeft="10dp"
+								android:maxLength="20"
+								android:inputType="textPassword"
+								android:singleLine="true"
+								android:imeOptions="actionDone"
+								android:hint="@string/hintPassword"
+								android:textColor="@color/gray_text_tagboa"
+								android:layout_marginTop="3dp"
+								/>
+					</LinearLayout>
+
+					<Button
+							android:id="@+id/btnLogin"
+							android:layout_width="90dp"
+							android:layout_height="90dp"
+							android:text="@string/buttonLogin"
+							android:layout_alignParentRight="true"
+							android:background="@drawable/btn_blue_selector"
+							android:layout_centerVertical="true"
+							android:textColor="@android:color/white"
+							android:onClick="onClick"
+							/>
+
+				</RelativeLayout>
+
+				<RelativeLayout
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:layout_marginTop="8dp"
+						>
+
+					<TextView
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:text="@string/infoRegisterSuggestion"
+							android:layout_centerVertical="true"
+							android:layout_marginLeft="15dp"
+							android:textColor="@color/gray_very_light_text_tagboa"
+							android:textSize="14dp"
+							android:layout_marginRight="100dp"/>
+
+					<Button
+							android:id="@+id/buttonLoginRegister"
+							android:layout_width="90dp"
+							android:layout_height="43dp"
+							android:text="@string/hintRegister"
+							android:layout_alignParentRight="true"
+							android:layout_centerVertical="true"
+							android:layout_marginRight="10dp"
+							android:background="@drawable/btn_gray_selector"
+							android:textColor="@android:color/white"
+							android:onClick="onClick"/>
+				</RelativeLayout>
+
+				<RelativeLayout
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:layout_marginTop="10dp"
+						>
+
+					<TextView
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:text="@string/messageFacebookLogin"
+							android:layout_centerVertical="true"
+							android:layout_marginLeft="15dp"
+							android:textColor="@color/gray_very_light_text_tagboa"
+							android:textSize="14dp"
+							android:layout_marginRight="100dp"/>
+
+					<Button
+							android:id="@+id/buttonLoginFacebook"
+							android:text="Connect"
+							android:layout_width="90dp"
+							android:layout_height="43dp"
+							android:layout_alignParentRight="true"
+							android:layout_centerVertical="true"
+							android:layout_marginRight="10dp"
+							android:textColor="@android:color/white"
+							android:background="@drawable/btn_facebook_selector"
+							android:onClick="onClick"/>
+
+				</RelativeLayout>
+
+				<FrameLayout
+						android:layout_width="fill_parent"
+						android:layout_height="15dp">
+
+					<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:text=" "/>
+				</FrameLayout>
+			</LinearLayout>
+		</LinearLayout>
+
+		<RelativeLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="20dp"
+				android:layout_marginRight="20dp"
+				android:layout_gravity="center_horizontal">
+
+			<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/infoFindPassword"
+					android:id="@+id/textViewLoginFindPassword"
+					android:layout_centerVertical="true"
+					android:textColor="@drawable/selector_blue_text_button"
+					android:textSize="14dp"
+					android:clickable="true"
+					android:onClick="onClick"
+					/>
+
+			<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/infoPrivacyPolicy"
+					android:id="@+id/textViewLoginPrivacyPolicy"
+					android:textColor="@drawable/selector_blue_text_button"
+					android:textSize="14dp"
+					android:layout_centerHorizontal="true"
+					android:layout_toRightOf="@+id/textViewLoginFindPassword"
+					android:layout_marginLeft="20dp"
+					android:clickable="true"
+					android:onClick="onClick"/>
+		</RelativeLayout>
+
+		<FrameLayout
+				android:layout_width="fill_parent"
+				android:layout_height="20dp">
+
+			<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="2dp"
+					android:text=" "
+					android:layout_gravity="center"
+					android:textColor="@color/red_tagboa"
+					android:textSize="13sp"
+					android:id="@+id/textViewLoginBottomLine"
+					android:textStyle="bold"/>
+		</FrameLayout>
+	</LinearLayout>
+
+</ScrollView>

@@ -174,4 +174,60 @@ public class TagboaApi {
 		params.put("query", query);
 		HttpClient.get(TagboaUrl.TAGS.toString(), params, jsonHttpResponseHandler);
 	}
+
+	public static void GetExternalLogins(Context context, JsonHttpResponseHandler jsonHttpResponseHandler) {
+		if (HttpClient == null)
+			InitializeHttpClient(context);
+		HttpClient.removeHeader("Authorization");
+
+		RequestParams params = new RequestParams();
+		params.put("returnUrl", "%2F");
+		params.put("generateState", "true");
+		HttpClient.get(TagboaUrl.EXTERNAL_LOGINS.toString(), params, jsonHttpResponseHandler);
+	}
+
+	public static void GetExternalLogin(Context context, String provider, String state, JsonHttpResponseHandler jsonHttpResponseHandler) {
+		if (HttpClient == null)
+			InitializeHttpClient(context);
+
+		RequestParams params = new RequestParams();
+		params.put("provider", provider);
+		params.put("response_type", "token");
+		params.put("client_id", "self");
+		params.put("redirect_uri", "app.tagboa.net");
+		params.put("state", state);
+		HttpClient.get(TagboaUrl.EXTERNAL_LOGIN.toString(), params, jsonHttpResponseHandler);
+	}
+
+	/**
+	 * Facebook Login
+	 * @param context
+	 * @param access_token
+	 * @param userid Facebook User ID (1023......)
+	 *               @param username null일 경우 기존 유저.
+	 * @param jsonHttpResponseHandler
+	 */
+	public static void FacebookLogin(Context context, String access_token, String userid, String username, JsonHttpResponseHandler jsonHttpResponseHandler) {
+		if (HttpClient == null)
+			InitializeHttpClient(context);
+		RequestParams params = new RequestParams();
+		params.put("token", access_token);
+		params.put("userid", userid);
+		params.put("username", username == null ? "" : username);
+		HttpClient.post(context, TagboaUrl.FACEBOOK_LOGIN.toString(), params, jsonHttpResponseHandler);
+	}
+
+	public static void RegisterExternalLogin(Context context, String username, JsonHttpResponseHandler jsonHttpResponseHandler) {
+		if (HttpClient == null)
+			InitializeHttpClient(context);
+		RequestParams params = new RequestParams();
+		params.put("UserName", username);
+		HttpClient.post(context, TagboaUrl.REGISTER_EXTERNAL_LOGINS.toString(), params, jsonHttpResponseHandler);
+	}
+
+	public static void GetUserInfo(Context context, JsonHttpResponseHandler jsonHttpResponseHandler) {
+		if (HttpClient == null)
+			InitializeHttpClient(context);
+		HttpClient.get(TagboaUrl.USER_INFO.toString(), jsonHttpResponseHandler);
+	}
 }

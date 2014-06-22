@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import com.actionbarsherlock.app.SherlockActivity;
 import net.tagboa.app.model.TagboaClient;
+import net.tagboa.app.page.MainActivity;
 
 /**
  * 공통 액티비티.

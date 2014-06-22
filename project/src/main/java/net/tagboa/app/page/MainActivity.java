@@ -1,6 +1,7 @@
-package net.tagboa.app;
+package net.tagboa.app.page;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,6 +15,9 @@ import com.androidquery.AQuery;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.tokenautocomplete.FilteredArrayAdapter;
 import com.tokenautocomplete.TokenCompleteTextView;
+import net.tagboa.app.BaseActivity;
+import net.tagboa.app.R;
+import net.tagboa.app.RegisterFacebookActivity;
 import net.tagboa.app.model.*;
 import net.tagboa.app.net.FileDownloadTask;
 import net.tagboa.app.net.TagboaApi;
@@ -28,8 +32,9 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener, TagCompletionView.TokenListener  {
+public class MainActivity extends BaseActivity implements View.OnClickListener, TagCompletionView.TokenListener {
 	private static final String TAG = "MainActivity";
+	private static final int REQUEST_REGISTER_FACEBOOK = 103;
 	public static String ApplicationName = "TagBoa";
 	public static String BaseUrl = "app.tagboa.net";
 	public static String BaseRestUrl = "app.tagboa.net/api";
@@ -54,7 +59,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 			}
 		};
 
-		completionView = (TagCompletionView)findViewById(R.id.searchView);
+		completionView = (TagCompletionView) findViewById(R.id.searchView);
 		completionView.allowDuplicates(false);
 		completionView.setTokenClickStyle(TokenCompleteTextView.TokenClickStyle.Delete);
 		completionView.setAdapter(adapter);
@@ -99,9 +104,57 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
 			return true;
 		}
+		else if (id == R.id.action_facebook) {
+			Intent intent = new Intent(this, RegisterFacebookActivity.class);
+			startActivityForResult(intent, REQUEST_REGISTER_FACEBOOK);
+		}
 		return super.onOptionsItemSelected(item);
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if(resultCode != RESULT_OK)
+			return;
+		switch (requestCode) {
+			case REQUEST_REGISTER_FACEBOOK: {
+				try {
+					JSONObject response = new JSONObject(data.getStringExtra("result"));
+					_token = response.getString("access_token");
+					_username = response.getString("userName");
+					TagboaApi.InitializeHttpClient(MainActivity.this);
+					MainActivity.ShowToast(MainActivity.this, String.format("%s 로그인", _username));
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				try {
+					TagboaApi.GetItems(MainActivity.this, _username, new JsonHttpResponseHandler() {
+						@Override
+						public void onSuccess(JSONArray response) {
+							super.onSuccess(response);
+							MainActivity.ShowToast(MainActivity.this, String.valueOf(response.length()) + "개 있습니다.");
+						}
+
+						@Override
+						public void onFailure(Throwable e, JSONObject errorResponse) {
+							super.onFailure(e, errorResponse);
+							MainActivity.ShowToast(MainActivity.this, "조회 실패");
+						}
+
+						@Override
+						public void onFinish() {
+							super.onFinish();
+						}
+					});
+				} catch (JSONException e) {
+					e.printStackTrace();
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
+			}
+			break;
+		}
+	}
 
 	/**
 	 * 토스트 메시지.
@@ -150,7 +203,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 		switch (view.getId()) {
 			case R.id.buttonLogin: {
 				// 로그인 테스트.
-				TagboaApi.Login(MainActivity.this, "tester", "tester", new JsonHttpResponseHandler() {
+				TagboaApi.Login(MainActivity.this, "tester", "qwerty", new JsonHttpResponseHandler() {
 					@Override
 					public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 						super.onSuccess(statusCode, headers, response);
@@ -233,8 +286,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 				}
 			}
 			break;
-			case R.id.buttonAddItem:
-			{
+			case R.id.buttonAddItem: {
 				try {
 					TagboaItem item = new TagboaItem();
 					item.Title = "태그 넣은 테스트" + DateTime.now();
@@ -277,6 +329,32 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 				}
 			}
 			break;
+			case R.id.buttonUserInfo: {
+				TagboaApi.GetUserInfo(MainActivity.this, new JsonHttpResponseHandler() {
+					@Override
+					public void onSuccess(JSONArray response) {
+						super.onSuccess(response);
+
+					}
+
+					@Override
+					public void onSuccess(JSONObject response) {
+						super.onSuccess(response);
+					}
+
+					@Override
+					public void onFailure(Throwable e, JSONObject errorResponse) {
+						super.onFailure(e, errorResponse);
+					}
+
+					@Override
+					public void onFinish() {
+						super.onFinish();
+					}
+				});
+
+			}
+			break;
 		}
 	}
 
@@ -284,13 +362,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 	private void updateTokenConfirmation() {
 		StringBuilder sb = new StringBuilder("Current tokens:\n");
 		selectedTags.clear();
-		for (Object token: completionView.getObjects()) {
+		for (Object token : completionView.getObjects()) {
 			selectedTags.add((TagboaTag) token);
 			sb.append(token.toString());
 			sb.append("\n");
 		}
 
-		((TextView)findViewById(R.id.tokens)).setText(sb);
+		((TextView) findViewById(R.id.tokens)).setText(sb);
 	}
 
 
@@ -329,10 +407,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 		@Override
 		public void onSuccess(JSONArray message) {
 			try {
-				if(tagboaTags == null)
+				if (tagboaTags == null)
 					tagboaTags = new ArrayList<TagboaTag>();
 				tagboaTags.clear();
-				for (int i=0; i < message.length() ; i++)
+				for (int i = 0; i < message.length(); i++)
 					tagboaTags.add(TagboaTag.fromJson(message.getJSONObject(i)));
 
 				if (tagboaTags != null && tagboaTags.size() > 0) {

@@ -1,9 +1,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="net.tagboa.app.MainActivity" >
+    tools:context="net.tagboa.app.page.MainActivity" >
     
     <item android:id="@+id/action_download"
         android:title="@string/menuDownloadDatabase"
+         />
+	<item android:id="@+id/action_facebook"
+        android:title="Facebook 로그인"
          />
 	<item android:id="@+id/action_settings"
         android:title="@string/action_settings"

@@ -7,7 +7,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
-import net.tagboa.app.MainActivity;
+import net.tagboa.app.page.MainActivity;
 import org.apache.http.HttpResponse;
 
 import javax.net.ssl.HttpsURLConnection;

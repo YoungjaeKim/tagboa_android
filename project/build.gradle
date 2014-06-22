@@ -9,7 +9,7 @@ buildscript {
 apply plugin: 'android'
 
 repositories {
-        mavenCentral()
+    mavenCentral()
 }
 
 android {
@@ -84,7 +84,7 @@ android {
     }
 
     File signFile = rootProject.file('project/tagboa.properties')
-    if ( project.ext.loadSign ) {
+    if (project.ext.loadSign) {
         Properties p = new Properties()
         p.load(new FileInputStream(signFile))
         signingConfigs {
@@ -96,20 +96,21 @@ android {
             }
         }
         buildTypes.release.signingConfig signingConfigs.releaseConfig
-    }else {
+    } else {
         buildTypes.release.signingConfig = null
     }
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:19.0.+'
+    compile 'com.android.support:support-v4:19.1.+'
     compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
     compile 'net.sf.opencsv:opencsv:2.+'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    compile('org.simpleframework:simple-xml:2.7.+'){
+    compile('org.simpleframework:simple-xml:2.7.+') {
         exclude module: 'stax'
         exclude module: 'stax-api'
         exclude module: 'xpp3'
     }
+    compile project(':facebook')
 }

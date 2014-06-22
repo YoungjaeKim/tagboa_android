@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:tools="http://schemas.android.com/tools"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical"
+		android:fillViewport="false"
+		android:paddingLeft="20dp"
+		android:paddingTop="20dp"
+		android:paddingRight="20dp"
+		android:paddingBottom="20dp"
+		tools:context=".page.register.RegisterFacebookActivity">
+
+	<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical">
+
+		<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"
+				android:background="@android:color/white"
+				android:id="@+id/linearLayoutFacebookRegisterPreCheck"
+				>
+
+			<TextView
+					android:id="@+id/textViewFacebookRegisterPreCheck"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="Facebook 인증 중입니다..."
+					android:layout_marginTop="15dp"
+					android:layout_marginLeft="10dp"
+					android:textSize="13sp"
+					/>
+
+			<FrameLayout
+					android:layout_width="match_parent"
+					android:layout_height="15dp"
+					android:background="@android:color/transparent"
+					>
+			</FrameLayout>
+		</LinearLayout>
+
+		<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"
+				android:background="@android:color/white"
+				android:id="@+id/linearLayoutFacebookRegisterSelectOne"
+				android:visibility="gone"
+				>
+
+			<TextView
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:id="@+id/textViewFacebookRegisterTitle"
+					android:layout_marginTop="10dp"
+					android:layout_marginLeft="10dp"
+					android:textSize="15sp"
+					/>
+
+			<RelativeLayout
+					android:id="@+id/relativeLayoutFacebookRegisterClose"
+					android:layout_height="40dp"
+					android:layout_width="match_parent"
+					android:orientation="vertical"
+					android:layout_marginRight="50dp"
+					android:layout_marginLeft="50dp"
+					android:layout_marginTop="15dp"
+					android:layout_marginBottom="5dp"
+					android:visibility="gone">
+
+				<Button
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:id="@+id/buttonFacebookRegisterClose"
+						android:textColor="@android:color/white"
+						android:onClick="onClick"
+						android:background="@drawable/btn_gray_selector"
+						/>
+
+				<RelativeLayout
+						android:layout_width="wrap_content"
+						android:layout_height="fill_parent"
+						android:layout_centerInParent="true"
+						>
+
+					<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:textColor="@android:color/white"
+							android:textSize="14sp"
+							android:text="닫기"
+							android:singleLine="true"
+							android:layout_marginLeft="5dp"
+							android:layout_centerInParent="true"/>
+
+				</RelativeLayout>
+			</RelativeLayout>
+
+			<TextView
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="다음 중 하나를 선택해주세요."
+					android:layout_marginTop="10dp"
+					android:layout_marginLeft="10dp"
+					android:textSize="13sp"
+					/>
+
+			<RelativeLayout
+					android:layout_height="40dp"
+					android:layout_width="match_parent"
+					android:orientation="vertical"
+					android:layout_marginRight="50dp"
+					android:layout_marginLeft="50dp"
+					android:layout_marginTop="15dp"
+					android:layout_marginBottom="5dp">
+
+				<Button
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:id="@+id/buttonFacebookRegisterNewUser"
+						android:textColor="@android:color/white"
+						android:onClick="onClick"
+						/>
+
+				<RelativeLayout
+						android:layout_width="wrap_content"
+						android:layout_height="fill_parent"
+						android:layout_centerInParent="true"
+						>
+
+					<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:textColor="@android:color/white"
+							android:textSize="14sp"
+							android:text="가입하기"
+							android:singleLine="true"
+							android:layout_marginLeft="5dp"
+							android:layout_centerInParent="true"/>
+				</RelativeLayout>
+			</RelativeLayout>
+
+			<RelativeLayout
+					android:layout_height="40dp"
+					android:layout_width="match_parent"
+					android:orientation="vertical"
+					android:layout_marginRight="50dp"
+					android:layout_marginLeft="50dp"
+					android:layout_marginTop="15dp"
+					android:layout_marginBottom="5dp">
+
+				<Button
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:id="@+id/buttonFacebookRegisterCurrentUser"
+						android:textColor="@android:color/white"
+						android:onClick="onClick"
+						/>
+
+				<RelativeLayout
+						android:layout_width="wrap_content"
+						android:layout_height="fill_parent"
+						android:layout_centerInParent="true"
+						>
+
+					<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:textColor="@android:color/white"
+							android:textSize="14sp"
+							android:text="이미 바풀 아이디가 있습니다."
+							android:singleLine="true"
+							android:layout_marginLeft="5dp"
+							android:layout_centerInParent="true"/>
+
+				</RelativeLayout>
+			</RelativeLayout>
+
+			<FrameLayout
+					android:layout_width="match_parent"
+					android:layout_height="15dp"
+					android:background="@android:color/transparent"
+					>
+			</FrameLayout>
+		</LinearLayout>
+
+		<LinearLayout
+				android:orientation="vertical"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:gravity="center_horizontal"
+				android:background="@android:color/white"
+				android:id="@+id/linearLayoutFacebookRegisterForm"
+				android:visibility="gone"
+				>
+
+			<TextView
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:id="@+id/textViewFacebookRegisterInformation"
+					android:layout_marginTop="10dp"
+					android:layout_marginLeft="10dp"
+					android:textSize="13sp"
+					android:textColor="@color/gray_text_tagboa"/>
+
+			<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:id="@+id/linearLayout"
+					android:layout_marginTop="10dp"
+					android:layout_marginLeft="10dp"
+					android:layout_marginRight="10dp">
+
+				<EditText
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:inputType="textEmailAddress"
+						android:digits="abcdefghijklmnopqrstuvwxyz1234567890"
+						android:singleLine="true"
+						android:imeOptions="actionNext"
+						android:ems="10"
+						android:id="@+id/editTextFacebookRegisterUserId"
+						android:layout_weight="1"
+						android:textSize="15sp"
+						android:hint="아이디"
+						/>
+
+				<ImageView
+						android:layout_width="30dp"
+						android:layout_height="30dp"
+						android:id="@+id/imageViewFacebookRegisterUserIdCheck"
+						android:layout_gravity="center_vertical"
+						android:layout_marginLeft="5dp"
+						android:visibility="gone"/>
+			</LinearLayout>
+
+			<!-- 예전유저 비밀번호 입력 -->
+			<LinearLayout
+					android:id="@+id/linearLayoutFacebookRegisterCurrentUserPassword"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="10dp"
+					android:layout_marginLeft="10dp"
+					android:layout_marginRight="10dp">
+
+				<EditText
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:inputType="textPassword"
+						android:id="@+id/editTextFacebookRegisterCurrentPassword"
+						android:layout_weight="1"
+						android:singleLine="true"
+						android:textSize="15sp"
+						android:hint="비밀번호"
+						/>
+			</LinearLayout>
+
+			<!-- 약관동의 -->
+			<LinearLayout
+					android:id="@+id/linearLayoutFacebookRegisterAgreement"
+					android:layout_width="fill_parent"
+					android:layout_height="fill_parent"
+					android:layout_marginLeft="10dp"
+					android:layout_marginTop="10dp"
+					android:layout_marginRight="10dp">
+
+				<CheckBox
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="개인정보 보호정책"
+						android:id="@+id/checkBoxFacebookRegisterAgreement"
+						android:textSize="15sp"
+						android:textColor="@color/gray_light_text_tagboa"/>
+
+				<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:id="@+id/textViewFacebookRegisterAgreement"
+						android:text="약관에 동의합니다."
+						android:layout_marginLeft="20dp"
+						android:onClick="onClick"
+						android:clickable="true"
+						android:textSize="15sp"/>
+			</LinearLayout>
+
+			<RelativeLayout
+					android:layout_height="40dp"
+					android:layout_width="match_parent"
+					android:orientation="vertical"
+					android:layout_marginRight="50dp"
+					android:layout_marginLeft="50dp"
+					android:layout_marginTop="15dp"
+					android:layout_marginBottom="5dp"
+					android:id="@+id/relativeLayoutRegisterSubmit">
+
+				<Button
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:id="@+id/buttonFacebookRegisterSubmit"
+						android:textColor="@android:color/white"
+						android:onClick="onClick"
+						/>
+
+				<RelativeLayout
+						android:layout_width="wrap_content"
+						android:layout_height="fill_parent"
+						android:layout_centerInParent="true"
+						>
+
+					<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:textColor="@android:color/white"
+							android:textSize="14sp"
+							android:text="가입하기"
+							android:singleLine="true"
+							android:layout_marginLeft="5dp"
+							android:layout_centerInParent="true"/>
+
+					<!--<ImageView-->
+					<!--android:layout_width="20dp"-->
+					<!--android:layout_height="20dp"-->
+					<!--android:layout_centerVertical="true"-->
+					<!--android:src="@drawable/ic_navigation_next_item"-->
+					<!--android:layout_alignParentRight="true"-->
+					<!--android:layout_marginRight="5dp"/>-->
+				</RelativeLayout>
+			</RelativeLayout>
+
+			<TextView
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="다른 선택"
+					android:layout_marginTop="12dp"
+					android:layout_marginLeft="10dp"
+					android:textSize="13sp"
+					android:textColor="@color/gray_text_tagboa"/>
+
+			<RelativeLayout
+					android:layout_height="40dp"
+					android:layout_width="match_parent"
+					android:orientation="vertical"
+					android:layout_marginRight="50dp"
+					android:layout_marginLeft="50dp"
+					android:layout_marginTop="5dp"
+					android:layout_marginBottom="5dp"
+					android:id="@+id/relativeLayoutRegisterSelectOther">
+
+				<Button
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:id="@+id/buttonFacebookRegisterSelectOther"
+						android:textColor="@android:color/white"
+						android:onClick="onClick"
+						android:background="@drawable/btn_gray_selector"
+						/>
+
+				<RelativeLayout
+						android:layout_width="wrap_content"
+						android:layout_height="fill_parent"
+						android:layout_centerInParent="true"
+						>
+
+					<TextView
+							android:id="@+id/textViewFacebookRegisterSelectOther"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:textColor="@android:color/white"
+							android:textSize="14sp"
+							android:singleLine="true"
+							android:layout_marginLeft="5dp"
+							android:layout_centerInParent="true"/>
+				</RelativeLayout>
+			</RelativeLayout>
+
+			<FrameLayout
+					android:layout_width="match_parent"
+					android:layout_height="15dp"
+					android:background="@android:color/transparent"
+					>
+			</FrameLayout>
+		</LinearLayout>
+
+		<FrameLayout
+				android:layout_width="fill_parent"
+				android:layout_height="fill_parent"
+				android:layout_marginLeft="20dp"
+				android:layout_marginTop="10dp"
+				android:layout_marginRight="20dp"
+				android:layout_marginBottom="15dp">
+
+			<RelativeLayout
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:layout_gravity="center_horizontal">
+
+				<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="개인정보 보호정책"
+						android:id="@+id/textViewFacebookRegisterPrivacyPolicy"
+						android:textSize="14dp"
+						android:onClick="onClick"
+						android:clickable="true"
+						/>
+
+
+				<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="@android:string/cancel"
+						android:layout_toRightOf="@+id/textViewFacebookRegisterPrivacyPolicy"
+						android:id="@+id/buttonFacebookRegisterCancel"
+						android:textSize="14dp"
+						android:layout_marginLeft="20dp"
+						android:onClick="onClick"
+						android:clickable="true"
+						android:background="@android:color/transparent"
+						/>
+			</RelativeLayout>
+		</FrameLayout>
+
+	</LinearLayout>
+</ScrollView>

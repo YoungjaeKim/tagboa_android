@@ -72,13 +72,14 @@
     <orderEntry type="library" exported="" name="android-async-http-1.4.4" level="project" />
     <orderEntry type="library" exported="" name="gcm" level="project" />
     <orderEntry type="library" exported="" name="android-query.0.26.7" level="project" />
+    <orderEntry type="library" exported="" name="support-v4-19.1.0" level="project" />
     <orderEntry type="library" exported="" name="opencsv-2.3" level="project" />
     <orderEntry type="library" exported="" name="javacsv" level="project" />
     <orderEntry type="library" exported="" name="simple-xml-2.7.1" level="project" />
-    <orderEntry type="library" exported="" name="support-v4-19.0.1" level="project" />
     <orderEntry type="library" exported="" name="actionbarsherlock-4.4.0" level="project" />
     <orderEntry type="library" exported="" name="google-play-services" level="project" />
     <orderEntry type="library" exported="" name="joda-time-2.2" level="project" />
+    <orderEntry type="module" module-name="facebook" exported="" />
   </component>
 </module>
 
