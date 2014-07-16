@@ -11,10 +11,13 @@ import android.widget.TextView;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import net.tagboa.app.BaseActivity;
 import net.tagboa.app.R;
+import net.tagboa.app.RegisterFacebookActivity;
 import net.tagboa.app.net.TagboaApi;
-import org.apache.http.auth.AuthenticationException;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
 
 /**
  * 로그인 액티비티
@@ -28,6 +31,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 	private EditText _editTextUserId;
 	private EditText _editTextPassword;
 	private TextView _textViewBottomLine;
+	private String _token;
+	private String _username;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -65,20 +70,48 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 		if (resultCode != RESULT_OK)
 			return;
 		switch (requestCode) {
+			case REQUEST_REGISTER_FACEBOOK: {
+				try {
+					JSONObject response = new JSONObject(data.getStringExtra("result"));
+					_token = response.getString("access_token");
+					_username = response.getString("userName");
+					TagboaApi.InitializeHttpClient(LoginActivity.this);
+					MainActivity.ShowToast(LoginActivity.this, String.format("%s 로그인", _username));
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				try {
+					TagboaApi.GetItems(LoginActivity.this, _username, new JsonHttpResponseHandler() {
+						@Override
+						public void onSuccess(JSONArray response) {
+							super.onSuccess(response);
+							MainActivity.ShowToast(LoginActivity.this, String.valueOf(response.length()) + "개 있습니다.");
+						}
+
+						@Override
+						public void onFailure(Throwable e, JSONObject errorResponse) {
+							super.onFailure(e, errorResponse);
+							MainActivity.ShowToast(LoginActivity.this, "조회 실패");
+						}
+
+						@Override
+						public void onFinish() {
+							super.onFinish();
+						}
+					});
+				} catch (JSONException e) {
+					e.printStackTrace();
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
+			}
+			break;
 			// 회원가입 후 처리.
 			case REQUEST_REGISTER: {
 				// 회원가입 완료 후 바로 로그인.
 				String u = data.getExtras().getString("principal");
 				String p = data.getExtras().getString("password");
 				TagboaApi.Login(LoginActivity.this, u, p, new LoginCookieJsonHttpResponseHandler(u, p));
-			}
-			break;
-			case REQUEST_REGISTER_FACEBOOK: {
-				// 페이스북 가입 성공.
-				if (data != null) {
-					setResult(RESULT_OK, data);
-					LoginActivity.this.finish();
-				}
 			}
 			break;
 		}
@@ -96,20 +129,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 				if (_editTextPassword != null)
 					password = _editTextPassword.getText().toString();
 				try {
-					TagboaApi.ProcessLogin(LoginActivity.this, id, password, new LoginCookieJsonHttpResponseHandler(id, password));
+					TagboaApi.Login(LoginActivity.this, id, password, new LoginCookieJsonHttpResponseHandler(id, password));
 				} catch (IllegalArgumentException e) {
-					MainActivity.ShowToast(LoginActivity.this, TagboaApi.getLabel(LoginActivity.this, e.getMessage()), true);
+					MainActivity.ShowToast(LoginActivity.this, e.getMessage(), true);
 				}
-			}
-			break;
-			case R.id.buttonLoginRegister: {
-				Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-				startActivityForResult(intent, REQUEST_REGISTER);
-			}
-			break;
-			case R.id.textViewLoginFindPassword: {
-				Intent intent = new Intent(LoginActivity.this, PasswordResetActivity.class);
-				startActivityForResult(intent, REQUEST_PASSWORD_RESET);
 			}
 			break;
 			case R.id.textViewLoginPrivacyPolicy: {
@@ -124,50 +147,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 				startActivityForResult(intent, REQUEST_REGISTER_FACEBOOK);
 			}
 			break;
-		}
-	}
-
-	/**
-	 * Basic Authentication 기반 로그인 결과값 처리.
-	 *
-	 * @deprecated 쿠키방식으로 교체 후 사용 안함.
-	 */
-	private class LoginBasicAuthJsonHttpResponseHandler extends JsonHttpResponseHandler {
-		private final String id;
-		private final String password;
-
-		public LoginBasicAuthJsonHttpResponseHandler(String id, String password) {
-			this.id = id;
-			this.password = password;
-		}
-
-		@Override
-		public void onSuccess(JSONObject jsonObject) {
-			try {
-				if (jsonObject.getBoolean("success")) {
-					super.onSuccess(jsonObject);
-					// 로그인 정보 삽입.
-					TagboaApi.HttpClient.setBasicAuth(id, password);
-					Intent intent = new Intent();
-					intent.putExtra("userId", id);
-					intent.putExtra("password", password);
-					setResult(RESULT_OK, intent);
-					LoginActivity.this.finish();
-				}
-				else {
-					throw new AuthenticationException();
-				}
-			} catch (JSONException e) {
-				MainActivity.ShowToast(LoginActivity.this, getString(R.string.errorConnection), true);
-			} catch (AuthenticationException e) {
-				MainActivity.ShowToast(LoginActivity.this, getString(R.string.errorLogin), true);
-			}
-		}
-
-		@Override
-		public void onFailure(Throwable throwable, String s) {
-			super.onFailure(throwable, s);
-			MainActivity.ShowToast(LoginActivity.this, getString(R.string.errorLogin), true);
 		}
 	}
 
@@ -187,33 +166,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 		}
 
 		@Override
-		public void onSuccess(JSONObject jsonObject) {
-			super.onSuccess(jsonObject);
-			try {
-				BapulMessage message = BapulMessage.FromJson(jsonObject);
-				if (message.isSuccess) {
-					// 로그인 정보 삽입.
-					Intent intent = new Intent();
-					intent.putExtra("userId", id);
-
-					setResult(RESULT_OK, intent);
-					MainActivity._member = Member.FromJson(jsonObject.getJSONObject("items"));
-					LoginActivity.this.finish();
-				}
-				else {
-					MainActivity.ShowToast(LoginActivity.this, getString(R.string.errorLogin), true);
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-
-		}
-
-		@Override
-		public void onFailure(Throwable throwable, String s) {
+		public void onFailure(int statusCode, Throwable error, String content) {
 			MainActivity.ShowToast(LoginActivity.this, getString(R.string.errorConnection), true);
-			super.onFailure(throwable, s);
+			super.onFailure(statusCode, error, content);
 		}
-
 	}
 }

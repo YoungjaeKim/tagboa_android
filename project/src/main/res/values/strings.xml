@@ -61,5 +61,6 @@
     <string name="infoFindPassword">비밀번호 찾기</string>
     <string name="infoPrivacyPolicy">개인정보 보호정책</string>
     <string name="title_activity_privacy_policy">PrivacyPolicyActivity</string>
+	<string name="errorLogin">로그인에 문제가 있습니다.</string>
 
 </resources>

@@ -1,11 +1,10 @@
 package net.tagboa.app.page;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.MenuItem;
+import net.tagboa.app.BaseActivity;
 import net.tagboa.app.R;
 
-public class PrivacyPolicyActivity extends ActionBarActivity {
+public class PrivacyPolicyActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -13,12 +12,4 @@ public class PrivacyPolicyActivity extends ActionBarActivity {
         setContentView(R.layout.activity_privacy_policy);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        return super.onOptionsItemSelected(item);
-    }
 }

@@ -494,59 +494,6 @@ public class RegisterFacebookActivity extends BaseActivity implements View.OnCli
 	}
 
 	/**
-	 * 가입완료 결과 핸들러.
-	 */
-	private class RegisterFacebookJsonHttpResponseHandler extends JsonHttpResponseHandler {
-		boolean newUser;
-
-		public RegisterFacebookJsonHttpResponseHandler(boolean isNewUser) {
-			newUser = isNewUser;
-		}
-
-		@Override
-		public void onSuccess(JSONObject jsonObject) {
-			super.onSuccess(jsonObject);
-//			BapulMessage message = null;
-//			try {
-//				message = BapulMessage.FromJson(jsonObject);
-//			} catch (JSONException e) {
-//				e.printStackTrace();
-//			}
-//
-//			if (message != null && message.isSuccess) {
-//				Member member = null;
-//				try {
-//					member = Member.FromJson(jsonObject.getJSONObject("memberModel"));
-//					MainActivity._member = member;
-//				} catch (JSONException e) {
-//					e.printStackTrace();
-//				}
-//
-//				// 가입 성공.
-//				Intent intent = new Intent();
-//				intent.putExtra("oauth", true);
-//				intent.putExtra("userId", _principal);
-//				intent.putExtra("providerUserId", member != null ? member.providerUserId : "");
-//				intent.putExtra("provider", "facebook");
-//				intent.putExtra("password", _password);
-//
-//				setResult(RESULT_OK, intent);
-//				RegisterFacebookActivity.this.finish();
-//			}
-//			else {
-//				// 실패시 존재하는 ID를 알림.
-//				MainActivity.ShowToast(RegisterFacebookActivity.this, getString(R.string.toastFacebookRegisterWithLoginError), true);
-//			}
-		}
-
-		@Override
-		public void onFailure(Throwable throwable, JSONObject jsonObject) {
-			super.onFailure(throwable, jsonObject);
-		}
-	}
-
-
-	/**
 	 * ID 입력 딜레이 처리.
 	 * http://stackoverflow.com/a/5776469/361100
 	 */

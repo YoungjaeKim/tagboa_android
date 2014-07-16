@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.androidquery.AQuery;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.tokenautocomplete.FilteredArrayAdapter;
 import com.tokenautocomplete.TokenCompleteTextView;
@@ -39,12 +38,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 	public static String BaseUrl = "app.tagboa.net";
 	public static String BaseRestUrl = "app.tagboa.net/api";
 	public static ArrayList<VideoItem> VideoItems;
-	AQuery aq = new AQuery(this);
 
 	TagCompletionView completionView;
 	ArrayList<TagboaTag> tagboaTags = new ArrayList<TagboaTag>();
 	ArrayList<TagboaTag> selectedTags = new ArrayList<TagboaTag>();
 	ArrayAdapter<TagboaTag> adapter;
+	private String _token;
+	private String _username;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -195,9 +195,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 		}
 	};
 
-	private String _token;
-	private String _username;
-
 	@Override
 	public void onClick(View view) {
 		switch (view.getId()) {
@@ -236,6 +233,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 						public void onSuccess(JSONArray response) {
 							super.onSuccess(response);
 							MainActivity.ShowToast(MainActivity.this, String.valueOf(response.length()) + "개 있습니다.");
+
 						}
 
 						@Override
