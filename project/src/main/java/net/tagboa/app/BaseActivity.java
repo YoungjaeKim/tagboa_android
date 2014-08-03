@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import com.actionbarsherlock.app.SherlockActivity;
 import net.tagboa.app.model.TagboaClient;
-import net.tagboa.app.page.MainActivity;
+import net.tagboa.app.page.TestActivity;
 
 /**
  * 공통 액티비티.
@@ -26,17 +26,17 @@ public class BaseActivity extends SherlockActivity implements TagboaClient {
 
 	@Override
 	public String GetApplicationName() {
-		return MainActivity.ApplicationName;
+		return TestActivity.ApplicationName;
 	}
 
 	@Override
 	public String GetBaseUrl() {
-		return MainActivity.BaseUrl;
+		return TestActivity.BaseUrl;
 	}
 
 	@Override
 	public String GetBaseRestUrl() {
-		return MainActivity.BaseRestUrl;
+		return TestActivity.BaseRestUrl;
 	}
 
 	@Override

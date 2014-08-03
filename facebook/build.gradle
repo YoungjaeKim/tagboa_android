@@ -10,7 +10,8 @@ buildscript {
 apply plugin: 'android-library'
 
 dependencies {
-    compile 'com.android.support:support-v4:18.0.+'
+    compile 'com.android.support:support-v4:20.0.+'
+    compile files('libs/bolts.jar')
 }
 
 repositories {
@@ -19,7 +20,7 @@ repositories {
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "19.0.1"
+    buildToolsVersion "20"
 
     defaultConfig {
         minSdkVersion 8

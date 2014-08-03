@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              style="@style/ptr_headerContainer"
+              android:background="@android:color/transparent"
+              android:cacheColorHint="@android:color/transparent">
+
+	<RelativeLayout
+			android:id="@+id/ptr_id_header"
+			style="@style/ptr_header"
+			android:background="@android:color/transparent"
+			android:cacheColorHint="@android:color/transparent"
+			>
+
+		<RelativeLayout
+				android:id="@+id/ptr_left_image"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_centerVertical="true"
+				android:layout_marginRight="10dp"
+				android:layout_toLeftOf="@+id/ptr_id_textwrapper">
+
+			<ImageView
+					android:id="@+id/ptr_id_image"
+					android:layout_marginLeft="60dp"
+					style="@style/ptr_arrow"/>
+
+			<!--<ProgressBar-->
+					<!--android:id="@+id/ptr_id_blink"-->
+					<!--android:layout_width="40dp"-->
+					<!--android:layout_height="40dp"-->
+					<!--android:layout_marginLeft="50dp"-->
+					<!--android:layout_marginTop="5dp"-->
+					<!--android:indeterminateDrawable="@drawable/loader_blink"/>-->
+
+			<ProgressBar
+			android:id="@+id/ptr_id_spinner"
+			style="@style/ptr_spinner"/>
+		</RelativeLayout>
+
+		<LinearLayout
+				android:id="@+id/ptr_id_textwrapper"
+				style="@style/ptr_textwrapper"
+				android:layout_centerHorizontal="true"
+				>
+
+			<TextView
+					android:id="@+id/ptr_id_text"
+					style="@style/ptr_text"/>
+
+			<TextView
+					android:id="@+id/ptr_id_last_updated"
+					style="@style/ptr_last_updated"/>
+		</LinearLayout>
+	</RelativeLayout>
+</LinearLayout>

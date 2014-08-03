@@ -7,7 +7,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
-import net.tagboa.app.page.MainActivity;
+import net.tagboa.app.page.TestActivity;
 import org.apache.http.HttpResponse;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -157,7 +157,7 @@ public class FileDownloadTask extends AsyncTask<HttpResponse, Integer, String> {
 	 */
 	public static final String DefaultFolder = Environment.getExternalStoragePublicDirectory(
 			Environment.DIRECTORY_DOWNLOADS)
-			+ File.separator + MainActivity.ApplicationName
+			+ File.separator + TestActivity.ApplicationName
 			+ File.separator;
 
 	/**

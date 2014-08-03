@@ -45,7 +45,7 @@ public class SplashActivity extends Activity {
 			// TODO: Youngjae (2014-06-22 15:17:25) : Share intent implementation.
 
 			if (intent == null) {
-				intent = new Intent(SplashActivity.this, MainActivity.class);
+				intent = new Intent(SplashActivity.this, HomeActivity.class);
 			}
 
 			intent.putExtra("path", imgPath);

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:tools="http://schemas.android.com/tools"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		tools:context=".page.MainActivity"
+		>
+		<!--android:descendantFocusability="blocksDescendants"-->
+	<LinearLayout
+			android:id="@+id/linearLayoutQuestionItemBody"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:paddingTop="3dp"
+			android:paddingBottom="4dp"
+			android:paddingRight="3dp"
+			android:paddingLeft="10dp"
+			android:layout_marginLeft="12dp"
+			android:layout_marginRight="12dp"
+			android:background="@drawable/selectable_background_item_tagboa"
+			>
+
+		<!-- 헤더 -->
+		<LinearLayout
+				android:id="@+id/linearLayoutQuestionItemHeader"
+				android:orientation="vertical"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:visibility="gone"
+				>
+
+			<TextView
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:id="@+id/textViewQuestionItemHeader"
+					android:textSize="12sp"
+					android:textColor="@color/gray_time_tagboa"/>
+
+			<View
+					android:layout_width="match_parent"
+					android:layout_height="1dp"
+					android:layout_marginTop="2dp"
+					android:layout_marginRight="5dp"
+					android:layout_marginBottom="3dp"
+					android:background="@color/gray_border_splitter_tagboa">
+			</View>
+		</LinearLayout>
+
+		<RelativeLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				>
+
+			<LinearLayout
+					android:orientation="vertical"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					>
+
+				<RelativeLayout
+						android:orientation="vertical"
+						android:layout_width="fill_parent"
+						android:layout_weight="1"
+						android:layout_height="0dp"
+						android:layout_marginTop="5dp"
+						android:layout_marginRight="5dp"
+						android:layout_marginBottom="1dp">
+
+					<ImageView
+							android:layout_width="40dp"
+							android:layout_height="40dp"
+							android:id="@+id/imageViewQuestionItemFace"
+                        android:visibility="gone"/>
+
+					<LinearLayout
+							android:orientation="horizontal"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:layout_marginRight="85dp"
+							android:layout_marginLeft="0dp">
+
+						<RelativeLayout
+								android:orientation="vertical"
+								android:layout_width="fill_parent"
+								android:layout_height="fill_parent"
+								android:layout_marginLeft="12dp"
+								android:layout_gravity="center_vertical">
+
+							<LinearLayout
+									android:layout_width="fill_parent"
+									android:layout_height="wrap_content"
+									android:orientation="horizontal"
+									android:id="@+id/linearLayoutQuestionItemFirstLine"
+									>
+
+								<TextView
+										android:layout_width="wrap_content"
+										android:layout_height="wrap_content"
+										android:id="@+id/textViewQuestionItemTitle"
+										android:textSize="13sp"
+										android:textColor="@color/blue_key_tagboa"
+										android:layout_gravity="center_vertical"/>
+
+								<!-- 제목 옆 라벨 -->
+								<TextView
+										android:layout_width="wrap_content"
+										android:layout_height="17dp"
+										android:id="@+id/textViewQuestionItemLabel1"
+										android:textSize="12sp"
+										android:layout_marginLeft="6dp"
+										android:textColor="@android:color/white"
+										android:background="@color/blue_key_tagboa"
+										android:paddingLeft="2dp"
+										android:paddingRight="2dp"
+										android:gravity="center"
+										android:visibility="gone"
+										android:layout_gravity="center_vertical"/>
+							</LinearLayout>
+
+							<TextView
+									android:layout_width="wrap_content"
+									android:layout_height="wrap_content"
+									android:id="@+id/textViewQuestionItemTime"
+									android:textColor="@color/gray_time_tagboa"
+									android:textSize="12sp"
+									android:layout_below="@+id/linearLayoutQuestionItemFirstLine"
+									android:layout_alignParentLeft="true"
+									android:layout_marginTop="2dp"
+									/>
+
+						</RelativeLayout>
+
+					</LinearLayout>
+
+				</RelativeLayout>
+
+				<TextView
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:id="@+id/textViewQuestionItemDescription"
+						android:textColor="@color/gray_text_tagboa"
+						android:layout_marginTop="4dp"
+						android:layout_marginBottom="4dp"
+						android:textSize="15sp"
+						android:layout_marginLeft="5dp"
+						android:layout_marginRight="85dp"
+						android:autoLink="none"/>
+
+				<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="20dp"
+						android:id="@+id/textViewQuestionItemTopics"
+						android:gravity="center_vertical"
+						android:singleLine="true"
+						android:paddingLeft="5dp"
+						android:paddingRight="5dp"
+						android:textColor="@color/gray_very_light_text_tagboa"
+						android:textSize="13sp"/>
+
+			</LinearLayout>
+
+			<LinearLayout
+					android:orientation="vertical"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentRight="true"
+					android:layout_alignParentTop="true"
+					android:layout_marginTop="5dp"
+					android:layout_marginRight="5dp">
+
+				<ImageView
+						android:layout_width="80dp"
+						android:layout_height="63dp"
+						android:id="@+id/imageViewQuestionItemPreview"
+						android:scaleType="fitXY"
+						android:maxHeight="100dp"
+                    android:onClick="onClick"/>
+
+			</LinearLayout>
+
+		</RelativeLayout>
+	</LinearLayout>
+</RelativeLayout>

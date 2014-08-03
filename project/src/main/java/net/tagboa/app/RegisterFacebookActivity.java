@@ -24,7 +24,7 @@ import com.sromku.simple.fb.utils.Attributes;
 import com.sromku.simple.fb.utils.PictureAttributes;
 import net.tagboa.app.model.TagboaExternalLogin;
 import net.tagboa.app.net.TagboaApi;
-import net.tagboa.app.page.MainActivity;
+import net.tagboa.app.page.TestActivity;
 import net.tagboa.app.page.PrivacyPolicyActivity;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,7 +48,7 @@ public class RegisterFacebookActivity extends BaseActivity implements View.OnCli
 					Permission.READ_FRIENDLISTS,
 					Permission.USER_ABOUT_ME,
 					Permission.EMAIL,
-					Permission.PUBLISH_STREAM
+					Permission.PUBLISH_ACTION
 			};
 	private SimpleFacebook mSimpleFacebook;
 	private boolean _isAgreementChecked;
@@ -278,7 +278,7 @@ public class RegisterFacebookActivity extends BaseActivity implements View.OnCli
 //			try {
 //				TagboaApi.GetExternalLogins(RegisterFacebookActivity.this, new CheckOAuthJsonResponseHandler(profile));
 //			} catch (IllegalArgumentException e) {
-//				MainActivity.ShowToast(RegisterFacebookActivity.this, e.getMessage(), true);
+//				TestActivity.ShowToast(RegisterFacebookActivity.this, e.getMessage(), true);
 //
 //			}
 		}
@@ -323,7 +323,7 @@ public class RegisterFacebookActivity extends BaseActivity implements View.OnCli
 //		try {
 //			BapulApi.ProcessLogin(RegisterFacebookActivity.this, _principal, _password, new ProcessLoginJsonResponseHandler());
 //		} catch (IllegalArgumentException e) {
-//			MainActivity.ShowToast(RegisterFacebookActivity.this, BapulApi.getLabel(RegisterFacebookActivity.this, e.getMessage()), true);
+//			TestActivity.ShowToast(RegisterFacebookActivity.this, BapulApi.getLabel(RegisterFacebookActivity.this, e.getMessage()), true);
 //		}
 	}
 
@@ -406,10 +406,10 @@ public class RegisterFacebookActivity extends BaseActivity implements View.OnCli
 					if (_principal.length() < 6)
 						throw new IllegalArgumentException(getString(R.string.validationUserIdLength6));
 				} catch (IllegalArgumentException e) {
-					MainActivity.ShowToast(RegisterFacebookActivity.this, e.getMessage(), true);
+					TestActivity.ShowToast(RegisterFacebookActivity.this, e.getMessage(), true);
 					return;
 				} catch (Exception e) {
-					MainActivity.ShowToast(RegisterFacebookActivity.this, getString(R.string.errorConnection), true);
+					TestActivity.ShowToast(RegisterFacebookActivity.this, getString(R.string.errorConnection), true);
 					return;
 				}
 
@@ -526,7 +526,7 @@ public class RegisterFacebookActivity extends BaseActivity implements View.OnCli
 //				if (!jsonObject.getBoolean("success")) {
 //					super.onSuccess(jsonObject);
 //					_isUserIdOk = true;
-////					MainActivity.ShowToast(RegisterFacebookActivity.this, String.format(getString(R.string.toastRegisterIdCheckOk), id), true);
+////					TestActivity.ShowToast(RegisterFacebookActivity.this, String.format(getString(R.string.toastRegisterIdCheckOk), id), true);
 //				}
 //				else {
 //					_isUserIdOk = false;
@@ -534,10 +534,10 @@ public class RegisterFacebookActivity extends BaseActivity implements View.OnCli
 //				}
 //			} catch (JSONException e) {
 //				_isUserIdOk = false;
-//				MainActivity.ShowToast(RegisterFacebookActivity.this, getString(R.string.errorConnection), true);
+//				TestActivity.ShowToast(RegisterFacebookActivity.this, getString(R.string.errorConnection), true);
 //			} catch (AuthenticationException e) {
 //				_isUserIdOk = false;
-//				MainActivity.ShowToast(RegisterFacebookActivity.this, " " + id + " " + getString(R.string.errorRegisterUserIdDuplicate), true);
+//				TestActivity.ShowToast(RegisterFacebookActivity.this, " " + id + " " + getString(R.string.errorRegisterUserIdDuplicate), true);
 //			} finally {
 //				drawChecker(_imageViewUserIdCheck, _isUserIdOk);
 //			}
@@ -548,7 +548,7 @@ public class RegisterFacebookActivity extends BaseActivity implements View.OnCli
 //			super.onFailure(throwable, s);
 //			_isUserIdOk = false;
 //			drawChecker(_imageViewUserIdCheck, _isUserIdOk);
-//			MainActivity.ShowToast(RegisterFacebookActivity.this, getString(R.string.errorConnection), true);
+//			TestActivity.ShowToast(RegisterFacebookActivity.this, getString(R.string.errorConnection), true);
 //		}
 	}
 

@@ -31,8 +31,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener, TagCompletionView.TokenListener {
-	private static final String TAG = "MainActivity";
+public class TestActivity extends BaseActivity implements View.OnClickListener, TagCompletionView.TokenListener {
+	private static final String TAG = "TestActivity";
 	private static final int REQUEST_REGISTER_FACEBOOK = 103;
 	public static String ApplicationName = "TagBoa";
 	public static String BaseUrl = "app.tagboa.net";
@@ -49,7 +49,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_test);
 
 		adapter = new FilteredArrayAdapter<TagboaTag>(this, android.R.layout.simple_list_item_1, tagboaTags) {
 			@Override
@@ -122,23 +122,23 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 					JSONObject response = new JSONObject(data.getStringExtra("result"));
 					_token = response.getString("access_token");
 					_username = response.getString("userName");
-					TagboaApi.InitializeHttpClient(MainActivity.this);
-					MainActivity.ShowToast(MainActivity.this, String.format("%s 로그인", _username));
+					TagboaApi.InitializeHttpClient(TestActivity.this);
+					TestActivity.ShowToast(TestActivity.this, String.format("%s 로그인", _username));
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 				try {
-					TagboaApi.GetItems(MainActivity.this, _username, new JsonHttpResponseHandler() {
+					TagboaApi.GetItems(TestActivity.this, _username, null, new JsonHttpResponseHandler() {
 						@Override
 						public void onSuccess(JSONArray response) {
 							super.onSuccess(response);
-							MainActivity.ShowToast(MainActivity.this, String.valueOf(response.length()) + "개 있습니다.");
+							TestActivity.ShowToast(TestActivity.this, String.valueOf(response.length()) + "개 있습니다.");
 						}
 
 						@Override
 						public void onFailure(Throwable e, JSONObject errorResponse) {
 							super.onFailure(e, errorResponse);
-							MainActivity.ShowToast(MainActivity.this, "조회 실패");
+							TestActivity.ShowToast(TestActivity.this, "조회 실패");
 						}
 
 						@Override
@@ -191,7 +191,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 		}
 
 		public void onFailure(String message) {
-			MainActivity.ShowToast(MainActivity.this, message);
+			TestActivity.ShowToast(TestActivity.this, message);
 		}
 	};
 
@@ -200,7 +200,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 		switch (view.getId()) {
 			case R.id.buttonLogin: {
 				// 로그인 테스트.
-				TagboaApi.Login(MainActivity.this, "tester", "qwerty", new JsonHttpResponseHandler() {
+				TagboaApi.Login(TestActivity.this, "tester", "qwerty", new JsonHttpResponseHandler() {
 					@Override
 					public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 						super.onSuccess(statusCode, headers, response);
@@ -208,8 +208,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 							_token = response.getString("access_token");
 							_username = response.getString("userName");
 							_sharedPrefs.edit().putString("Authentication", response.toString()).commit();
-							TagboaApi.InitializeHttpClient(MainActivity.this);
-							MainActivity.ShowToast(MainActivity.this, String.format("%s 로그인", _username));
+							TagboaApi.InitializeHttpClient(TestActivity.this);
+							TestActivity.ShowToast(TestActivity.this, String.format("%s 로그인", _username));
 						} catch (JSONException e) {
 							e.printStackTrace();
 						}
@@ -219,7 +219,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 					public void onFailure(int statusCode, Throwable e, JSONObject errorResponse) {
 						super.onFailure(statusCode, e, errorResponse);
 						if (statusCode == 400) {
-							MainActivity.ShowToast(MainActivity.this, "아이디 또는 비밀번호가 틀렸습니다.");
+							TestActivity.ShowToast(TestActivity.this, "아이디 또는 비밀번호가 틀렸습니다.");
 						}
 					}
 				});
@@ -228,18 +228,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 			break;
 			case R.id.buttonGet: {
 				try {
-					TagboaApi.GetItems(MainActivity.this, _username, new JsonHttpResponseHandler() {
+					TagboaApi.GetItems(TestActivity.this, _username, null, new JsonHttpResponseHandler() {
 						@Override
 						public void onSuccess(JSONArray response) {
 							super.onSuccess(response);
-							MainActivity.ShowToast(MainActivity.this, String.valueOf(response.length()) + "개 있습니다.");
+							TestActivity.ShowToast(TestActivity.this, String.valueOf(response.length()) + "개 있습니다.");
 
 						}
 
 						@Override
 						public void onFailure(Throwable e, JSONObject errorResponse) {
 							super.onFailure(e, errorResponse);
-							MainActivity.ShowToast(MainActivity.this, "조회 실패");
+							TestActivity.ShowToast(TestActivity.this, "조회 실패");
 						}
 					});
 				} catch (JSONException e) {
@@ -260,7 +260,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 					item.ReadCount = 0;
 					item.Timestamp = DateTime.now();
 
-					TagboaApi.PostItem(MainActivity.this, item, new JsonHttpResponseHandler() {
+					TagboaApi.PostItem(TestActivity.this, item, new JsonHttpResponseHandler() {
 
 						@Override
 						public void onSuccess(JSONObject response) {
@@ -303,7 +303,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 					link.Status = TagboaUrlLinkStatus.Normal;
 					item.Links.add(link);
 
-					TagboaApi.PostItem(MainActivity.this, item, new JsonHttpResponseHandler() {
+					TagboaApi.PostItem(TestActivity.this, item, new JsonHttpResponseHandler() {
 
 						@Override
 						public void onSuccess(JSONObject response) {
@@ -328,7 +328,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 			}
 			break;
 			case R.id.buttonUserInfo: {
-				TagboaApi.GetUserInfo(MainActivity.this, new JsonHttpResponseHandler() {
+				TagboaApi.GetUserInfo(TestActivity.this, new JsonHttpResponseHandler() {
 					@Override
 					public void onSuccess(JSONArray response) {
 						super.onSuccess(response);
@@ -395,7 +395,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
 		String locale = _sharedPrefs.getString("locale", Locale.getDefault().toString());
 
-		TagboaApi.GetTags(MainActivity.this, q, locale, new SearchTopicJsonHttpResponseHandler());
+		TagboaApi.GetTags(TestActivity.this, q, locale, new SearchTopicJsonHttpResponseHandler());
 	}
 
 	/**
@@ -412,7 +412,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 					tagboaTags.add(TagboaTag.fromJson(message.getJSONObject(i)));
 
 				if (tagboaTags != null && tagboaTags.size() > 0) {
-					MainActivity.this.runOnUiThread(new Runnable() {
+					TestActivity.this.runOnUiThread(new Runnable() {
 						public void run() {
 							adapter.notifyDataSetChanged();
 						}

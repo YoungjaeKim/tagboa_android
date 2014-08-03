@@ -198,9 +198,8 @@ public class SessionManager {
 
 	/**
 	 * Extend and ask user for PUBLISH permissions
-	 * 
-	 * @param activity
-	 */
+	 *
+     */
 	public void extendPublishPermissions() {
 		Session session = Session.getActiveSession();
 		if (hasPendingRequest(session)) {

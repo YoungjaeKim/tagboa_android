@@ -92,6 +92,16 @@ public class TagboaApi {
 		}
 	}
 
+    /**
+     * 로그인 토큰이 존재하는지 여부.
+     * @param context
+     * @return
+     */
+    public static boolean HasLoginToken(final Context context){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return !"".equals(sharedPrefs.getString("Authentication", ""));
+    }
+
 	/**
 	 * 회원 가입.
 	 *
@@ -135,9 +145,17 @@ public class TagboaApi {
 
 		HttpClient.post(context, TagboaUrl.LOGIN.toString(false, false), params, jsonHttpResponseHandler);
 	}
-	// Youngjae (2014-06-05 02:47:09) :
 
-	public static void GetItems(Context context, String username, JsonHttpResponseHandler jsonHttpResponseHandler) throws JSONException, UnsupportedEncodingException {
+    /**
+     * 아이템 가져오기.
+     * @param context
+     * @param username
+     * @param lastKey
+     * @param jsonHttpResponseHandler
+     * @throws JSONException
+     * @throws UnsupportedEncodingException
+     */
+	public static void GetItems(Context context, String username, String lastKey, JsonHttpResponseHandler jsonHttpResponseHandler) throws JSONException, UnsupportedEncodingException {
 		if (HttpClient == null)
 			InitializeHttpClient(context);
 
@@ -145,6 +163,8 @@ public class TagboaApi {
 
 		params.put("application", ApplicationName((TagboaClient) context));
 		params.put("username", username);
+        if(lastKey != null)
+    		params.put("lastKey", lastKey);
 
 		HttpClient.get(context, TagboaUrl.ITEM.toString(), params, jsonHttpResponseHandler);
 	}

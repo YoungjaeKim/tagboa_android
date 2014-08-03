@@ -76,22 +76,22 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 					_token = response.getString("access_token");
 					_username = response.getString("userName");
 					TagboaApi.InitializeHttpClient(LoginActivity.this);
-					MainActivity.ShowToast(LoginActivity.this, String.format("%s 로그인", _username));
+					TestActivity.ShowToast(LoginActivity.this, String.format("%s 로그인", _username));
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 				try {
-					TagboaApi.GetItems(LoginActivity.this, _username, new JsonHttpResponseHandler() {
+					TagboaApi.GetItems(LoginActivity.this, _username, null, new JsonHttpResponseHandler() {
 						@Override
 						public void onSuccess(JSONArray response) {
 							super.onSuccess(response);
-							MainActivity.ShowToast(LoginActivity.this, String.valueOf(response.length()) + "개 있습니다.");
+							TestActivity.ShowToast(LoginActivity.this, String.valueOf(response.length()) + "개 있습니다.");
 						}
 
 						@Override
 						public void onFailure(Throwable e, JSONObject errorResponse) {
 							super.onFailure(e, errorResponse);
-							MainActivity.ShowToast(LoginActivity.this, "조회 실패");
+							TestActivity.ShowToast(LoginActivity.this, "조회 실패");
 						}
 
 						@Override
@@ -131,7 +131,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 				try {
 					TagboaApi.Login(LoginActivity.this, id, password, new LoginCookieJsonHttpResponseHandler(id, password));
 				} catch (IllegalArgumentException e) {
-					MainActivity.ShowToast(LoginActivity.this, e.getMessage(), true);
+					TestActivity.ShowToast(LoginActivity.this, e.getMessage(), true);
 				}
 			}
 			break;
@@ -167,7 +167,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
 		@Override
 		public void onFailure(int statusCode, Throwable error, String content) {
-			MainActivity.ShowToast(LoginActivity.this, getString(R.string.errorConnection), true);
+			TestActivity.ShowToast(LoginActivity.this, getString(R.string.errorConnection), true);
 			super.onFailure(statusCode, error, content);
 		}
 	}
