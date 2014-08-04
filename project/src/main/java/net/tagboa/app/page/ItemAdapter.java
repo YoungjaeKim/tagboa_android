@@ -41,7 +41,7 @@ public class ItemAdapter extends ArrayAdapter<TagboaItem> {
 	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		QuestionViewHolder viewHolder;
+		ItemViewHolder viewHolder;
 
 		RelativeLayout relativeLayout;
 		//Get the current alert object
@@ -57,7 +57,7 @@ public class ItemAdapter extends ArrayAdapter<TagboaItem> {
 			convertView = relativeLayout;
 
 			// UI 요소 가져오기.
-			viewHolder = new QuestionViewHolder();
+			viewHolder = new ItemViewHolder();
 			viewHolder.itemHeader = (LinearLayout) convertView.findViewById(R.id.linearLayoutQuestionItemHeader);
             viewHolder.itemHeaderText = (TextView) convertView.findViewById(R.id.textViewQuestionItemHeader);
             viewHolder.itemTitle = (TextView) convertView.findViewById(R.id.textViewQuestionItemTitle);
@@ -70,7 +70,7 @@ public class ItemAdapter extends ArrayAdapter<TagboaItem> {
 
 			convertView.setTag(viewHolder);
 		} else {
-			viewHolder = (QuestionViewHolder) convertView.getTag();
+			viewHolder = (ItemViewHolder) convertView.getTag();
 		}
 		viewHolder.position = position;
 		viewHolder.id = item.ID;
@@ -88,7 +88,7 @@ public class ItemAdapter extends ArrayAdapter<TagboaItem> {
 	 * Question용 ViewHolder 패턴 헬퍼클래스.
 	 * Created by Youngjae on 13. 11. 09.
 	 */
-	public static class QuestionViewHolder {
+	public static class ItemViewHolder {
 		// ViewHolder 패턴 적용.
 		// http://lucasr.org/2012/04/05/performance-tips-for-androids-listview/
 		// http://android.amberfog.com/?p=296

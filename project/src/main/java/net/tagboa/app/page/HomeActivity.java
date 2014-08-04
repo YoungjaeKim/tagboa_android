@@ -98,12 +98,17 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         //Set the above adapter as the adapter of choice for our list
         _listView.setAdapter(_itemAdapter);
         if (_itemAdapter != null)
-            _itemAdapter.notifyDataSetChanged();    }
+            _itemAdapter.notifyDataSetChanged();
+
+        // 이미 로그인 되어 있으면 리스트 조회.
+        if (TagboaApi.HasLoginToken(mActivity))
+            loadItems();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu) {
 
-        if(mActivity == null)
+        if (mActivity == null)
             mActivity = HomeActivity.this;
 
         if (TagboaApi.HasLoginToken(mActivity))
@@ -116,7 +121,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                     .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 
         // Inflate the menu; this adds items to the action bar if it is present.
-		getSupportMenuInflater().inflate(R.menu.main, menu);
+        getSupportMenuInflater().inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -125,13 +130,10 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
-        }
-        else if (id == R.id.buttonLogin) {
+        } else if (id == R.id.buttonLogin) {
 
             return true;
-        }
-
-        else if (id == R.id.action_facebook) {
+        } else if (id == R.id.action_facebook) {
             Intent intent = new Intent(this, RegisterFacebookActivity.class);
             startActivityForResult(intent, REQUEST_REGISTER_FACEBOOK);
         }
@@ -204,8 +206,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.buttonLogin:
-            {
+            case R.id.buttonLogin: {
 // 로그인 테스트.
                 TagboaApi.Login(HomeActivity.this, "tester", "qwerty", new JsonHttpResponseHandler() {
                     @Override
@@ -243,40 +244,51 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     private class jsonStreamResponsehandler extends JsonHttpResponseHandler {
         @Override
         public void onSuccess(JSONArray response) {
+            super.onSuccess(response);
             try {
-                if (response.length()> 0)
+                if (response.length() > 0) {
                     processItems(_currentPage, response);
-                else
+                }
+                else {
                     _items.clear();
+                }
             } catch (Exception e) {
-                Log.e(TAG, "HomeActivity.loadQuestion: " + e.getMessage());
+                Log.e(TAG, "HomeActivity.loadItems: " + e.getMessage());
             }
 
-            if(_itemAdapter != null)
+            if (_itemAdapter != null) {
                 _itemAdapter.notifyDataSetChanged();
+            }
 
-            if (_listView.isRefreshing())
+            if (_listView.isRefreshing()) {
                 _listView.onRefreshComplete();
-            super.onSuccess(response);
+            }
         }
 
         @Override
         public void onFailure(Throwable e, JSONObject errorResponse) {
             super.onFailure(e, errorResponse);
             HomeActivity.ShowToast(HomeActivity.this, "조회 실패");
+
+            if (_itemAdapter != null) {
+                _itemAdapter.notifyDataSetChanged();
+            }
+
+            if (_listView.isRefreshing()) {
+                _listView.onRefreshComplete();
+            }
         }
 
     }
 
     /**
      * 불러온 아이템 목록을 배열에 입력.
+     *
      * @param offset
      * @param jsonArray
      * @throws JSONException
      */
     private void processItems(Integer offset, JSONArray jsonArray) throws JSONException {
-        if (_items == null)
-            _items = new ArrayList<TagboaItem>();
         if (offset == 0) { // 새로고침이면 리스트 지우고 다시 로딩.
             _items.clear();
         }
@@ -288,9 +300,11 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                 try {
                     // NOTE: 늘상 나던
                     _items.add(TagboaItem.fromJson(jsonArray.getJSONObject(i)));
-                } catch (Exception ignore) {
+                }
+                catch (Exception ignore) {
                 }
             }
+            HomeActivity.ShowToast(mActivity, "현재 아이템:" + _items.size());
         } else {
             HomeActivity.ShowToast(mActivity, mActivity.getString(R.string.toastLoadNothing));
         }
@@ -301,11 +315,13 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
      * 질문 로딩.
      */
     protected void loadItems() {
+        _lastKey = null;
         loadItems(null);
     }
 
     /**
      * 질문 로딩.
+     *
      * @param lastKey
      */
     protected void loadItems(String lastKey) {
@@ -318,6 +334,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
             e.printStackTrace();
         }
     }
+
     /**
      * 완료 이벤트 delegation용 인터페이스.
      */
