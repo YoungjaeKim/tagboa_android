@@ -60,7 +60,8 @@
     <string name="infoRegisterSuggestion">아이디와 비밀번호만으로 가입</string>
     <string name="infoFindPassword">비밀번호 찾기</string>
     <string name="infoPrivacyPolicy">개인정보 보호정책</string>
-    <string name="title_activity_privacy_policy">PrivacyPolicyActivity</string>
+    <string name="title_activity_privacy_policy">개인정보보호정책</string>
+    <string name="title_activity_video_player">동영상</string>
 	<string name="errorLogin">로그인에 문제가 있습니다.</string>
     <string name="buttonProfile">내 프로필</string>
     <string name="ptr_last_updated">Updated: %1$s</string>
@@ -69,5 +70,6 @@
     <string name="ptr_release_to_refresh">당겨서 새로고침…</string>
     <string name="load_more_text">. . .</string>
     <string name="toastLoadNothing">더 이상 불러올 내용이 없습니다.</string>
+    <string name="errorPlayingVideo">영상 재생에 문제가 있습니다. 다시 시도해주세요.</string>
 
 </resources>

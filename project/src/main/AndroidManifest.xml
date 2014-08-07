@@ -89,6 +89,10 @@
         <activity
             android:name=".page.TestActivity"
             android:label="@string/title_activity_privacy_policy" >
+        </activity>        <activity
+            android:name=".page.VideoPlayerActivity"
+            android:label="@string/title_activity_video_player"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
         </activity>
     </application>
 

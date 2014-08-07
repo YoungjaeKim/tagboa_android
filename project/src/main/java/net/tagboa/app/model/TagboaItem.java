@@ -9,6 +9,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 /**
+ * 하나의 콘텐츠 아이템 단위.
  * Created by Youngjae on 2014-06-04.
  */
 public class TagboaItem {

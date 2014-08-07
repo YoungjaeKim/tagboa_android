@@ -62,7 +62,13 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                 if (i < 0 || _items.size() <= i)
                     return;
                 Intent intent = new Intent(mActivity, VideoPlayerActivity.class);
-                intent.putExtra("id", _items.get(i).ID);
+                try {
+                    intent.putExtra("item", _items.get(i).toJson().toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
                 HomeActivity.this.startActivityForResult(intent, REQUEST_ITEM_VIEW);
 //				mActivity.overridePendingTransition(R.anim.enter_fade_in, R.anim.no_effect);
             }
