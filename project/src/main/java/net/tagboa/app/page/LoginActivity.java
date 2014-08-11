@@ -37,8 +37,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		setTheme(R.style.Theme_Tagboa); //Used for theme switching in samples
-		getSupportActionBar().setDisplayShowTitleEnabled(false);
+		setTheme(R.style.Theme_Tagboa);
+		getSupportActionBar().setDisplayShowTitleEnabled(true);
 		getSupportActionBar().setLogo(R.drawable.ic_launcher);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);

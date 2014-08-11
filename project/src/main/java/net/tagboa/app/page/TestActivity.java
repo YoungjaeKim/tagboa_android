@@ -94,17 +94,17 @@ public class TestActivity extends BaseActivity implements View.OnClickListener, 
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		else if (id == R.id.action_download) {
-
-			return true;
-		}
-		else if (id == R.id.action_facebook) {
-			Intent intent = new Intent(this, RegisterFacebookActivity.class);
-			startActivityForResult(intent, REQUEST_REGISTER_FACEBOOK);
-		}
+//		if (id == R.id.action_settings) {
+//			return true;
+//		}
+//		else if (id == R.id.action_download) {
+//
+//			return true;
+//		}
+//		else if (id == R.id.action_facebook) {
+//			Intent intent = new Intent(this, RegisterFacebookActivity.class);
+//			startActivityForResult(intent, REQUEST_REGISTER_FACEBOOK);
+//		}
 		return super.onOptionsItemSelected(item);
 	}
 

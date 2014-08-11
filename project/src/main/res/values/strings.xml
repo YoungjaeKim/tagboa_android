@@ -76,5 +76,9 @@
     <string name="menuLogout">로그아웃</string>
     <string name="title_login">로그인</string>
     <string name="buttonFacebookConnect">Connect</string>
+    <string name="buttonInputComplete">입력 완료</string>
+    <string name="errorInternalServerError">서버에서 무언가 문제가 발생했습니다. 곧 수정하겠습니다.</string>
+    <string name="errorValidationTitleEmpty">제목을 적어주세요.</string>
+    <string name="buttonNewItem">새 콘텐츠 입력</string>
 
 </resources>

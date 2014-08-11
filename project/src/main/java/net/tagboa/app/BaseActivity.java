@@ -55,5 +55,10 @@ public class BaseActivity extends SherlockActivity implements TagboaClient {
         startActivity(intent);
         finish();
 	}
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (_sharedPrefs == null)
+            _sharedPrefs = PreferenceManager.getDefaultSharedPreferences(BaseActivity.this);
+    }
 }
