@@ -13,6 +13,7 @@ import net.tagboa.app.BaseActivity;
 import net.tagboa.app.R;
 import net.tagboa.app.RegisterFacebookActivity;
 import net.tagboa.app.net.TagboaApi;
+import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -111,7 +112,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 				// 회원가입 완료 후 바로 로그인.
 				String u = data.getExtras().getString("principal");
 				String p = data.getExtras().getString("password");
-				TagboaApi.Login(LoginActivity.this, u, p, new LoginCookieJsonHttpResponseHandler(u, p));
+				TagboaApi.Login(LoginActivity.this, u, p, new LoginCookieJsonHttpResponseHandler());
 			}
 			break;
 		}
@@ -129,7 +130,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 				if (_editTextPassword != null)
 					password = _editTextPassword.getText().toString();
 				try {
-					TagboaApi.Login(LoginActivity.this, id, password, new LoginCookieJsonHttpResponseHandler(id, password));
+					TagboaApi.Login(LoginActivity.this, id, password, new LoginCookieJsonHttpResponseHandler());
 				} catch (IllegalArgumentException e) {
 					TestActivity.ShowToast(LoginActivity.this, e.getMessage(), true);
 				}
@@ -157,18 +158,27 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 	 * 문제점 2. 최초에는 success로 됨.
 	 */
 	private class LoginCookieJsonHttpResponseHandler extends JsonHttpResponseHandler {
-		private final String id;
-		private final String password;
+        @Override
+        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+            super.onSuccess(statusCode, headers, response);
+            try {
+                _token = response.getString("access_token");
+                _username = response.getString("userName");
+                _sharedPrefs.edit().putString("Authentication", response.toString()).commit();
+                TagboaApi.InitializeHttpClient(LoginActivity.this);
+                setResult(RESULT_OK);
+                finish();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
 
-		public LoginCookieJsonHttpResponseHandler(String id, String password) {
-			this.id = id;
-			this.password = password;
-		}
-
-		@Override
-		public void onFailure(int statusCode, Throwable error, String content) {
-			TestActivity.ShowToast(LoginActivity.this, getString(R.string.errorConnection), true);
-			super.onFailure(statusCode, error, content);
-		}
+        @Override
+        public void onFailure(int statusCode, Throwable e, JSONObject errorResponse) {
+            super.onFailure(statusCode, e, errorResponse);
+            if (statusCode == 400) {
+                TestActivity.ShowToast(LoginActivity.this, getString(R.string.errorIncorrectIdOrPassword));
+            }
+        }
 	}
 }

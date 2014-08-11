@@ -4,13 +4,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Toast;
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.Window;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import net.tagboa.app.BaseActivity;
 import net.tagboa.app.R;
@@ -48,13 +51,46 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     private String _username;
     private JsonHttpResponseHandler streamResponseHandler = new jsonStreamResponsehandler();
     private String _lastKey;
+    private Intent receivedIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.Theme_Tagboa); //Used for theme switching in samples
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
         super.onCreate(savedInstanceState);
+        // 하나의 바풀앱 인스턴스만 뜨도록 처리.
+        // http://stackoverflow.com/a/10598594/361100  //Yang (2014-03-21 14:12:33) : manifest 에서 처리함.
+        if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {
+            finish();
+            return;
+        }
         setContentView(R.layout.activity_home);
+        receivedIntent = getIntent();
+        setSupportProgressBarIndeterminateVisibility(false);
+
         mActivity = HomeActivity.this;
 
+
+        // 로그아웃 후에 로그인창 표시.
+        boolean finish = getIntent().getBooleanExtra("finish", false);
+        if (finish) {
+            Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+            startActivityForResult(intent, REQUEST_LOGIN);
+            return;
+        }
+
+        // 로그인 기본 조건 체크.
+        if (!TagboaApi.HasLoginToken(mActivity)) {
+            // OAuth 로그인.
+            RequestLogin(HomeActivity.this);
+            return;
+        }
+
+        //// 로그인 성공 후의 프로세스 ////
         _listView = (PullToRefreshListView) findViewById(R.id.listViewItems);
         _listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -111,6 +147,31 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
             loadItems();
     }
 
+    /**
+     * @param intent
+     */
+    @Override
+    protected void onNewIntent(Intent intent) {
+        receivedIntent = intent;
+        super.onNewIntent(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (_sharedPrefs == null)
+            _sharedPrefs = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
+
+
+        //Yang (2014-04-02 15:55:46) : Settings Logout 처리 좋은 방법은 아니라 수정해야할것
+        if (receivedIntent != null && receivedIntent.getBooleanExtra("finish", false)) {
+            Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+            startActivityForResult(intent, REQUEST_LOGIN);
+            receivedIntent.removeExtra("finish");
+            return;
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu) {
 
@@ -137,11 +198,37 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.buttonLogin) {
+            // 로그인 테스트.
+            TagboaApi.Login(HomeActivity.this, "tester", "qwerty", new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    super.onSuccess(statusCode, headers, response);
+                    try {
+                        _token = response.getString("access_token");
+                        _username = response.getString("userName");
+                        _sharedPrefs.edit().putString("Authentication", response.toString()).commit();
+                        TagboaApi.InitializeHttpClient(HomeActivity.this);
+                        TestActivity.ShowToast(HomeActivity.this, String.format("%s 로그인 중", _username));
+                        loadItems(); // 로그인 성공하면 바로 리스트 가져온다.
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
 
+                @Override
+                public void onFailure(int statusCode, Throwable e, JSONObject errorResponse) {
+                    super.onFailure(statusCode, e, errorResponse);
+                    if (statusCode == 400) {
+                        TestActivity.ShowToast(HomeActivity.this, getString(R.string.errorIncorrectIdOrPassword));
+                    }
+                }
+            });
             return true;
         } else if (id == R.id.action_facebook) {
             Intent intent = new Intent(this, RegisterFacebookActivity.class);
             startActivityForResult(intent, REQUEST_REGISTER_FACEBOOK);
+        }else if(id == R.id.action_logout){
+            RequestLogin(HomeActivity.this);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -164,6 +251,10 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                 }
 
                 // 로그인 하자마자 목록 불러옴.
+                loadItems();
+            }
+            break;
+            case REQUEST_LOGIN:{
                 loadItems();
             }
             break;
@@ -212,34 +303,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.buttonLogin: {
-// 로그인 테스트.
-                TagboaApi.Login(HomeActivity.this, "tester", "qwerty", new JsonHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        super.onSuccess(statusCode, headers, response);
-                        try {
-                            _token = response.getString("access_token");
-                            _username = response.getString("userName");
-                            _sharedPrefs.edit().putString("Authentication", response.toString()).commit();
-                            TagboaApi.InitializeHttpClient(HomeActivity.this);
-                            TestActivity.ShowToast(HomeActivity.this, String.format("%s 로그인", _username));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(int statusCode, Throwable e, JSONObject errorResponse) {
-                        super.onFailure(statusCode, e, errorResponse);
-                        if (statusCode == 400) {
-                            TestActivity.ShowToast(HomeActivity.this, "아이디 또는 비밀번호가 틀렸습니다.");
-                        }
-                    }
-                });
-            }
-            break;
-
         }
     }
 
@@ -254,8 +317,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
             try {
                 if (response.length() > 0) {
                     processItems(_currentPage, response);
-                }
-                else {
+                } else {
                     _items.clear();
                 }
             } catch (Exception e) {
@@ -274,7 +336,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         @Override
         public void onFailure(Throwable e, JSONObject errorResponse) {
             super.onFailure(e, errorResponse);
-            HomeActivity.ShowToast(HomeActivity.this, "조회 실패");
+            HomeActivity.ShowToast(HomeActivity.this, getString(R.string.errorFetchData));
 
             if (_itemAdapter != null) {
                 _itemAdapter.notifyDataSetChanged();
@@ -285,6 +347,11 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
             }
         }
 
+        @Override
+        public void onFinish() {
+            super.onFinish();
+            setSupportProgressBarIndeterminateVisibility(false);
+        }
     }
 
     /**
@@ -306,11 +373,9 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                 try {
                     // NOTE: 늘상 나던
                     _items.add(TagboaItem.fromJson(jsonArray.getJSONObject(i)));
-                }
-                catch (Exception ignore) {
+                } catch (Exception ignore) {
                 }
             }
-            HomeActivity.ShowToast(mActivity, "현재 아이템:" + _items.size());
         } else {
             HomeActivity.ShowToast(mActivity, mActivity.getString(R.string.toastLoadNothing));
         }
@@ -332,6 +397,8 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
      */
     protected void loadItems(String lastKey) {
         try {
+            setSupportProgressBarIndeterminateVisibility(true);
+
             TagboaApi.GetItems(mActivity, _username, lastKey, streamResponseHandler);
         } catch (JSONException e) {
 

@@ -34,9 +34,6 @@ import java.util.Locale;
 public class TestActivity extends BaseActivity implements View.OnClickListener, TagCompletionView.TokenListener {
 	private static final String TAG = "TestActivity";
 	private static final int REQUEST_REGISTER_FACEBOOK = 103;
-	public static String ApplicationName = "TagBoa";
-	public static String BaseUrl = "app.tagboa.net";
-	public static String BaseRestUrl = "app.tagboa.net/api";
 	public static ArrayList<VideoItem> VideoItems;
 
 	TagCompletionView completionView;

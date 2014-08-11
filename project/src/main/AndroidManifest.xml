@@ -89,9 +89,15 @@
         <activity
             android:name=".page.TestActivity"
             android:label="@string/title_activity_privacy_policy" >
-        </activity>        <activity
+        </activity>
+        <activity
             android:name=".page.VideoPlayerActivity"
             android:label="@string/title_activity_video_player"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
+        </activity>
+        <activity
+            android:name=".page.LoginActivity"
+            android:label="@string/title_login"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
         </activity>
     </application>
