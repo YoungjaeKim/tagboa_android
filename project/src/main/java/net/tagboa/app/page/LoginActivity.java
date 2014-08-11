@@ -76,7 +76,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 					JSONObject response = new JSONObject(data.getStringExtra("result"));
 					_token = response.getString("access_token");
 					_username = response.getString("userName");
-					TagboaApi.InitializeHttpClient(LoginActivity.this);
+                    TagboaApi.InitializeHttpClient(LoginActivity.this);
                     setResult(RESULT_OK);
                     LoginActivity.this.finish();
                 } catch (JSONException e) {
@@ -131,9 +131,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
 	/**
 	 * 로그인 결과값 처리.
-	 * Youngjae (2013-11-03 01:50:28) : 작업 중.
-	 * 문제점 1. field.required.tokenModel.channel 처리 부분에 문제가 있음.
-	 * 문제점 2. 최초에는 success로 됨.
 	 */
 	private class LoginCookieJsonHttpResponseHandler extends JsonHttpResponseHandler {
         @Override
@@ -159,6 +156,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             super.onFailure(statusCode, e, errorResponse);
             if (statusCode == 400) {
                 TestActivity.ShowToast(LoginActivity.this, getString(R.string.errorIncorrectIdOrPassword));
+            }else{
+                TestActivity.ShowToast(LoginActivity.this, getString(R.string.errorConnection));
             }
         }
 	}
