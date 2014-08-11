@@ -19,7 +19,7 @@
 
 <resources>
 
-    <style name="Theme.Tagboa" parent="@style/Theme.Sherlock.Light">
+    <style name="Theme.Tagboa" parent="@style/Theme.Sherlock.Light.DarkActionBar">
         <item name="android:actionBarItemBackground">@drawable/selectable_background_tagboa</item>
         <item name="android:popupMenuStyle">@style/PopupMenu.Tagboa</item>
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Tagboa</item>
@@ -30,17 +30,19 @@
         <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_tagboa</item>
         <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Tagboa</item>
         
-        
+                <!-- Light.DarkActionBar specific -->
+        <item name="android:actionBarWidgetTheme">@style/Theme.Tagboa.Widget</item>
+
     </style>
 
-    <style name="ActionBar.Solid.Tagboa" parent="@style/Widget.Sherlock.Light.ActionBar.Solid">
+    <style name="ActionBar.Solid.Tagboa" parent="@style/Widget.Sherlock.Light.ActionBar.Solid.Inverse">
         <item name="android:background">@drawable/ab_solid_tagboa</item>
         <item name="android:backgroundStacked">@drawable/ab_stacked_solid_tagboa</item>
         <item name="android:backgroundSplit">@drawable/ab_bottom_solid_tagboa</item>
         <item name="android:progressBarStyle">@style/ProgressBar.Tagboa</item>
     </style>
 
-    <style name="ActionBar.Transparent.Tagboa" parent="@style/Widget.Sherlock.Light.ActionBar">
+    <style name="ActionBar.Transparent.Tagboa" parent="@style/Widget.Sherlock.ActionBar">
         <item name="android:background">@drawable/ab_transparent_tagboa</item>
         <item name="android:progressBarStyle">@style/ProgressBar.Tagboa</item>
     </style>

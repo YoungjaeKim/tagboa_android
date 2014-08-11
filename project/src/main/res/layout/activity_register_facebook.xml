@@ -403,7 +403,7 @@
 						android:layout_height="wrap_content"
 						android:text="개인정보 보호정책"
 						android:id="@+id/textViewFacebookRegisterPrivacyPolicy"
-						android:textSize="14dp"
+						android:textSize="14sp"
 						android:onClick="onClick"
 						android:clickable="true"
 						/>
@@ -415,7 +415,7 @@
 						android:text="@android:string/cancel"
 						android:layout_toRightOf="@+id/textViewFacebookRegisterPrivacyPolicy"
 						android:id="@+id/buttonFacebookRegisterCancel"
-						android:textSize="14dp"
+						android:textSize="14sp"
 						android:layout_marginLeft="20dp"
 						android:onClick="onClick"
 						android:clickable="true"

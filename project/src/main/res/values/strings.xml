@@ -71,5 +71,10 @@
     <string name="load_more_text">. . .</string>
     <string name="toastLoadNothing">더 이상 불러올 내용이 없습니다.</string>
     <string name="errorPlayingVideo">영상 재생에 문제가 있습니다. 다시 시도해주세요.</string>
+    <string name="errorFetchData">조회 실패</string>
+    <string name="errorIncorrectIdOrPassword">아이디 또는 비밀번호가 틀렸습니다.</string>
+    <string name="menuLogout">로그아웃</string>
+    <string name="title_login">로그인</string>
+    <string name="buttonFacebookConnect">Connect</string>
 
 </resources>
