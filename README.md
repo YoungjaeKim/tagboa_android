@@ -5,7 +5,7 @@ TagBoa (태그보아)
 
 # 개발환경
  - IntelliJ 13
- - 안드로이드 개발환경 권장인 gradle 로 리소스 관리.
+ - 안드로이드 개발 권장환경인 gradle 로 리소스 관리.
 
 # 참여자
  - 기획: 최경일 (ulsanin@gmail.com)
