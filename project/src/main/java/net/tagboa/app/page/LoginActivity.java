@@ -77,32 +77,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 					_token = response.getString("access_token");
 					_username = response.getString("userName");
 					TagboaApi.InitializeHttpClient(LoginActivity.this);
-					TestActivity.ShowToast(LoginActivity.this, String.format("%s 로그인", _username));
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-				try {
-					TagboaApi.GetItems(LoginActivity.this, _username, null, new JsonHttpResponseHandler() {
-						@Override
-						public void onSuccess(JSONArray response) {
-							super.onSuccess(response);
-							TestActivity.ShowToast(LoginActivity.this, String.valueOf(response.length()) + "개 있습니다.");
-						}
-
-						@Override
-						public void onFailure(Throwable e, JSONObject errorResponse) {
-							super.onFailure(e, errorResponse);
-							TestActivity.ShowToast(LoginActivity.this, "조회 실패");
-						}
-
-						@Override
-						public void onFinish() {
-							super.onFinish();
-						}
-					});
-				} catch (JSONException e) {
-					e.printStackTrace();
-				} catch (UnsupportedEncodingException e) {
+                    setResult(RESULT_OK);
+                    LoginActivity.this.finish();
+                } catch (JSONException e) {
 					e.printStackTrace();
 				}
 			}
@@ -129,6 +106,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 					id = _editTextUserId.getText().toString();
 				if (_editTextPassword != null)
 					password = _editTextPassword.getText().toString();
+                // 로그인 수행.
 				try {
 					TagboaApi.Login(LoginActivity.this, id, password, new LoginCookieJsonHttpResponseHandler());
 				} catch (IllegalArgumentException e) {
@@ -166,8 +144,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 _username = response.getString("userName");
                 _sharedPrefs.edit().putString("Authentication", response.toString()).commit();
                 TagboaApi.InitializeHttpClient(LoginActivity.this);
-                setResult(RESULT_OK);
-                finish();
+
+                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // To clean up all activities
+                startActivity(intent);
+                LoginActivity.this.finish();
             } catch (JSONException e) {
                 e.printStackTrace();
             }

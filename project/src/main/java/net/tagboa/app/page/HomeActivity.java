@@ -59,8 +59,8 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setHomeButtonEnabled(false);
         super.onCreate(savedInstanceState);
         // 하나의 바풀앱 인스턴스만 뜨도록 처리.
         // http://stackoverflow.com/a/10598594/361100  //Yang (2014-03-21 14:12:33) : manifest 에서 처리함.
@@ -239,22 +239,8 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         if (resultCode != RESULT_OK)
             return;
         switch (requestCode) {
-            case REQUEST_REGISTER_FACEBOOK: {
-                try {
-                    JSONObject response = new JSONObject(data.getStringExtra("result"));
-                    _token = response.getString("access_token");
-                    _username = response.getString("userName");
-                    TagboaApi.InitializeHttpClient(HomeActivity.this);
-                    HomeActivity.ShowToast(HomeActivity.this, String.format("%s 로그인", _username));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                // 로그인 하자마자 목록 불러옴.
-                loadItems();
-            }
-            break;
             case REQUEST_LOGIN:{
+                HomeActivity.ShowToast(HomeActivity.this, String.format("%s 로그인", _username));
                 loadItems();
             }
             break;
