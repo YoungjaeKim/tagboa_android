@@ -8,7 +8,9 @@ import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import com.actionbarsherlock.view.Window;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.PersistentCookieStore;
 import net.tagboa.app.BaseActivity;
 import net.tagboa.app.R;
 import net.tagboa.app.RegisterFacebookActivity;
@@ -38,10 +40,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		setTheme(R.style.Theme_Tagboa);
-		getSupportActionBar().setDisplayShowTitleEnabled(true);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
 		getSupportActionBar().setLogo(R.drawable.ic_launcher);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+        setSupportProgressBarIndeterminateVisibility(false);
 
 		_editTextUserId = (EditText) findViewById(R.id.editId);
 		_editTextPassword = (EditText) findViewById(R.id.editPw);
@@ -54,7 +58,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 		CookieSyncManager.createInstance(getApplicationContext());
 		CookieManager cookieManager = CookieManager.getInstance();
 		cookieManager.removeAllCookie();
-		TagboaApi.BapulCookieStore.clear();
+        if(TagboaApi.BapulCookieStore == null)
+            TagboaApi.BapulCookieStore = new PersistentCookieStore(getApplicationContext());
+        TagboaApi.BapulCookieStore.clear();
 
 		// 사용자 셋팅 정보 삭제.
 		SharedPreferences.Editor editor = _sharedPrefs.edit();
@@ -107,7 +113,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 				if (_editTextPassword != null)
 					password = _editTextPassword.getText().toString();
                 // 로그인 수행.
-				try {
+
+                setSupportProgressBarIndeterminateVisibility(true);
+                try {
 					TagboaApi.Login(LoginActivity.this, id, password, new LoginCookieJsonHttpResponseHandler());
 				} catch (IllegalArgumentException e) {
 					TestActivity.ShowToast(LoginActivity.this, e.getMessage(), true);
@@ -160,5 +168,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 TestActivity.ShowToast(LoginActivity.this, getString(R.string.errorConnection));
             }
         }
-	}
+
+        @Override
+        public void onFinish() {
+            super.onFinish();
+            setSupportProgressBarIndeterminateVisibility(false);
+        }
+    }
 }

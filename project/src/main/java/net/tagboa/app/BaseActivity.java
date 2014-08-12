@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import com.actionbarsherlock.app.SherlockActivity;
 import net.tagboa.app.model.TagboaClient;
 import net.tagboa.app.page.HomeActivity;
+import net.tagboa.app.page.LoginActivity;
 import net.tagboa.app.page.TestActivity;
 
 /**
@@ -49,7 +51,7 @@ public class BaseActivity extends SherlockActivity implements TagboaClient {
 
         // 메인액티비티를 띄운 후 메인액티비티가 로그아웃을 호출한다.
         // http://stackoverflow.com/a/9580057/361100
-        Intent intent = new Intent(this, HomeActivity.class);
+        Intent intent = new Intent(this, LoginActivity.class);
         intent.putExtra("finish", true);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // To clean up all activities
         startActivity(intent);
