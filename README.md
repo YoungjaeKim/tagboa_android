@@ -10,6 +10,6 @@ TagBoa (태그보아)
 
 # 참여자
  - 기획: 최경일 (ulsanin@gmail.com)
- - 개발: 김영재 (youngjae@bapul.net), 나훈희 (nuts03@gmail.com)
+ - 개발: 김영재 (youngjae.kim@gmail.com), 나훈희 (nuts03@gmail.com)
  - 디자인: 이상선 (indend007@gmail.com)
  
