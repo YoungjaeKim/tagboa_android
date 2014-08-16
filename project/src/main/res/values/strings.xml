@@ -80,5 +80,7 @@
     <string name="errorInternalServerError">서버에서 무언가 문제가 발생했습니다. 곧 수정하겠습니다.</string>
     <string name="errorValidationTitleEmpty">제목을 적어주세요.</string>
     <string name="buttonNewItem">새 콘텐츠 입력</string>
+    <string name="dialogConfirmDeleteItem">이 콘텐츠를 삭제할까요?</string>
+    <string name="toastDeleteComplete">삭제 완료</string>
 
 </resources>

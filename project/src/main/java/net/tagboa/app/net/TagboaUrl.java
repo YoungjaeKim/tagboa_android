@@ -1,6 +1,7 @@
 package net.tagboa.app.net;
 
 /**
+ * 태그보아 관련 URL 모음
  * Created by Youngjae on 2014-06-02.
  */
 public enum TagboaUrl {
@@ -8,7 +9,15 @@ public enum TagboaUrl {
 	ROOT(""),
 	ITEMS("/items"),
 	TAG("/tag"),
-	URL_LINK("/urllink"), LOGIN("/token"), ITEM("/item"), TAGS("/tags"), EXTERNAL_LOGINS("/Account/ExternalLogins"), USER_INFO("/Account/UserInfo"), REGISTER_EXTERNAL_LOGINS("/Account/RegisterExternal"), EXTERNAL_LOGIN("/Account/ExternalLogin"), FACEBOOK_LOGIN("/Account/FacebookLogin");
+	URL_LINK("/urllink"),
+    LOGIN("/token"),
+    ITEM("/item"),
+    TAGS("/tags"),
+    EXTERNAL_LOGINS("/Account/ExternalLogins"),
+    USER_INFO("/Account/UserInfo"),
+    REGISTER_EXTERNAL_LOGINS("/Account/RegisterExternal"),
+    EXTERNAL_LOGIN("/Account/ExternalLogin"),
+    FACEBOOK_LOGIN("/Account/FacebookLogin");
 
 	/**
 	 * 생성자.

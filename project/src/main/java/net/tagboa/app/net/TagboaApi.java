@@ -185,6 +185,21 @@ public class TagboaApi {
         HttpClient.post(context, TagboaUrl.ITEM.toString(), entity, "application/json", jsonHttpResponseHandler);
     }
 
+    /**
+     * 아이템 삭제.
+     * @param context
+     * @param item
+     * @param jsonHttpResponseHandler
+     * @throws JSONException
+     * @throws UnsupportedEncodingException
+     */
+    public static void DeleteItem(Context context, TagboaItem item, JsonHttpResponseHandler jsonHttpResponseHandler) throws JSONException, UnsupportedEncodingException {
+        if (HttpClient == null)
+            InitializeHttpClient(context);
+
+        HttpClient.delete(context, TagboaUrl.ITEM.toString() + "/" + item.ID, jsonHttpResponseHandler);
+    }
+
     public static void GetTags(Context context, String query, String locale, JsonHttpResponseHandler jsonHttpResponseHandler) {
 
         if (HttpClient == null)

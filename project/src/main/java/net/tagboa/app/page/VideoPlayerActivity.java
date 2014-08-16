@@ -48,29 +48,21 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
         VideoUrlResolver urlResolver;
         urlResolver = new EbsUrlResolver();
 
-        urlResolver.getUrl(VideoPlayerActivity.this, "10118427", new JsonHttpResponseHandler("UTF-8") {
+        urlResolver.getUrl(VideoPlayerActivity.this, "http://www.ebs.co.kr/replay/show?courseId=BP0PAPB0000000009&stepId=01BP0PAPB0000000009&lectId=10118427", new VideoUrlResolver.VideoUrlResponseHandler() {
             @Override
-            public void onSuccess(JSONObject response) {
-                super.onSuccess(response);
-                try {
-                    String url = response.getString("vodStreamUrl");
-                    Uri uri = Uri.parse(url); //Uri.parse("http://ebsvod.ebs.co.kr/ebsvod/cul/2013/bp0papb0000000009/1m/20130522_140000_m10.mp4"); //Declare your url here.
+            public void onSuccess(String uri) {
+                Uri videoUrl = Uri.parse(uri); //Uri.parse("http://ebsvod.ebs.co.kr/ebsvod/cul/2013/bp0papb0000000009/1m/20130522_140000_m10.mp4");
 
-                    // 비디오 재생: http://stackoverflow.com/a/17407362/361100
-                    mVideoView.setMediaController(new MediaController(VideoPlayerActivity.this));
-                    mVideoView.setVideoURI(uri);
-                    mVideoView.requestFocus();
-                    mVideoView.start();
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
+                // 비디오 재생: http://stackoverflow.com/a/17407362/361100
+                mVideoView.setMediaController(new MediaController(VideoPlayerActivity.this));
+                mVideoView.setVideoURI(videoUrl);
+                mVideoView.requestFocus();
+                mVideoView.start();
             }
 
             @Override
-            public void onFailure(Throwable e, JSONObject errorResponse) {
-                super.onFailure(e, errorResponse);
+            public void onFailure(String message) {
+
             }
         });
     }

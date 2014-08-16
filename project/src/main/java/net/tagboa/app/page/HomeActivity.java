@@ -1,6 +1,8 @@
 package net.tagboa.app.page;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -103,6 +105,16 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                 }
                 HomeActivity.this.startActivityForResult(intent, REQUEST_ITEM_VIEW);
 //				mActivity.overridePendingTransition(R.anim.enter_fade_in, R.anim.no_effect);
+            }
+        });
+
+        _listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i < 0 || _items.size() <= i)
+                    return false;
+                confirmItemRemoveDialog(_items.get(i));
+                return false;
             }
         });
 
@@ -293,7 +305,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
-
     /**
      * 스트림 가져오는 것에 대한 재시도를 위해 OnStreamResponseListener 처리를 위해서 inner class 처리함.
      */
@@ -390,6 +401,52 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
             TagboaApi.GetItems(mActivity, null, lastKey, streamResponseHandler);
         } catch (JSONException e) {
 
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 질문 취소 확인 다이얼로그
+     */
+    private void confirmItemRemoveDialog(final TagboaItem item) {
+        new AlertDialog.Builder(mActivity)
+                .setMessage(mActivity.getString(R.string.dialogConfirmDeleteItem))
+//				.setCancelable(false)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        deleteItem(item);
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+
+    }
+
+    /**
+     * 아이템 삭제 처리 함수.
+     * @param item
+     */
+    private void deleteItem(TagboaItem item){
+        try {
+            setSupportProgressBarIndeterminateVisibility(true);
+            TagboaApi.DeleteItem(mActivity, item, new JsonHttpResponseHandler(){
+
+                @Override
+                public void onSuccess(JSONObject response) {
+                    super.onSuccess(response);
+                    HomeActivity.ShowToast(mActivity, getString(R.string.toastDeleteComplete));
+                    loadItems(); // 삭제하면 리프래시
+                }
+
+                @Override
+                public void onFinish() {
+                    super.onFinish();
+                    setSupportProgressBarIndeterminateVisibility(false);
+                }
+            });
+        } catch (JSONException e) {
             e.printStackTrace();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
