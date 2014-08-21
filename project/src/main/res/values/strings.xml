@@ -82,5 +82,7 @@
     <string name="buttonNewItem">새 콘텐츠 입력</string>
     <string name="dialogConfirmDeleteItem">이 콘텐츠를 삭제할까요?</string>
     <string name="toastDeleteComplete">삭제 완료</string>
+    <string name="errorUrlResolverFail">영상 주소가 잘못되었습니다.</string>
+    <string name="errorDestinationVideoServerUnreachable">동영상 제공자에 접속할 수 없습니다.</string>
 
 </resources>

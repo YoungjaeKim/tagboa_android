@@ -613,7 +613,7 @@ public class RegisterFacebookActivity extends BaseActivity implements View.OnCli
 
 //			BapulMessage message = null;
 //			try {
-//				message = BapulMessage.FromJson(jsonObject);
+//				message = BapulMessage.fromJson(jsonObject);
 //			} catch (JSONException e) {
 //				e.printStackTrace();
 //			}
@@ -654,7 +654,7 @@ public class RegisterFacebookActivity extends BaseActivity implements View.OnCli
 //			super.onSuccess(jsonObject);
 //			BapulMessage message = null;
 //			try {
-//				message = BapulMessage.FromJson(jsonObject);
+//				message = BapulMessage.fromJson(jsonObject);
 //			} catch (JSONException e) {
 //				e.printStackTrace();
 //			}
