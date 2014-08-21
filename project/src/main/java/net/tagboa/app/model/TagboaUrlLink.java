@@ -5,6 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
+ * 동영상 주소
  * Created by Youngjae on 2014-06-04.
  */
 public class TagboaUrlLink {
@@ -34,10 +35,21 @@ public class TagboaUrlLink {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("ID", ID);
 		jsonObject.put("Address", Address);
-		jsonObject.put("Status", Status);
+		jsonObject.put("Status", Status.ordinal());
 		jsonObject.put("RecentStatusChangedTime", RecentStatusChangedTime);
 		jsonObject.put("IsHidden", IsHidden);
 		jsonObject.put("Note", Note);
 		return jsonObject;
 	}
+
+    public static TagboaUrlLink fromJson(JSONObject jsonObject) throws JSONException {
+        TagboaUrlLink item = new TagboaUrlLink();
+        item.ID = jsonObject.getInt("ID");
+        item.Address = jsonObject.getString("Address");
+        item.Status = TagboaUrlLinkStatus.values()[jsonObject.getInt("Status")];
+        item.RecentStatusChangedTime = !jsonObject.isNull("RecentStatusChangedTime") ? DateTime.parse(jsonObject.getString("RecentStatusChangedTime")) : null;
+        item.IsHidden = jsonObject.getBoolean("IsHidden");
+        item.Note = jsonObject.getString("Note");
+        return item;
+    }
 }

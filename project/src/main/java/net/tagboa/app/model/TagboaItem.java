@@ -6,6 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -94,7 +95,23 @@ public class TagboaItem {
 		item.Description = jsonObject.getString("Description");
 		item.ReadCount = jsonObject.getInt("ReadCount");
 		item.Timestamp = DateTime.parse(jsonObject.getString("Timestamp"));
-		// TODO: tag, links 는 안함.
+
+        if (!jsonObject.isNull("Links")) {
+            JSONArray links = jsonObject.getJSONArray("Links");
+            item.Links = new ArrayList<TagboaUrlLink>();
+            for (int i = 0; i < links.length(); i++) {
+                TagboaUrlLink topic = TagboaUrlLink.fromJson(links.getJSONObject(i));
+                item.Links.add(topic);
+            }
+        }
+        if (!jsonObject.isNull("Tags")) {
+            JSONArray tags = jsonObject.getJSONArray("Tags");
+            item.Tags = new ArrayList<TagboaTag>();
+            for (int i = 0; i < tags.length(); i++) {
+                TagboaTag tag = TagboaTag.fromJson(tags.getJSONObject(i));
+                item.Tags.add(tag);
+            }
+        }
 		return item;
 	}
 }
