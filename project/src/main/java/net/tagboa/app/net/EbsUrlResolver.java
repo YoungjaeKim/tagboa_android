@@ -25,7 +25,7 @@ public class EbsUrlResolver implements VideoUrlResolver {
      * @param url
      * @param handler
      */
-    public void getUrl(Context context, String url, final VideoUrlResponseHandler handler){
+    public void getUrl(Context context, String url, final VideoUrlResponseHandler handler) throws IllegalArgumentException{
         Uri uri = Uri.parse(url);
         String lecId = uri.getQueryParameter("lectId");
         if(lecId == null || "".equals(lecId)) {
