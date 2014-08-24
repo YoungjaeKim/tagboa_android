@@ -31,13 +31,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/editTextDescription"
-                android:hint="간단 설명"/>
+                android:hint="간단한 설명"/>
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/editTextLink"
                 android:hint="동영상 주소"/>
+
+            <net.tagboa.app.view.TagCompletionView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/searchView"
+                android:hint="태그 검색..."
+                />
+
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>
