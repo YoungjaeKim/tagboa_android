@@ -181,7 +181,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
         if (TagboaApi.HasLoginToken(mActivity)) {
             menu.add(getString(R.string.buttonNewItem))
-                    .setIcon(R.drawable.ic_content_edit)
+                    .setIcon(R.drawable.ic_action_new)
                     .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 
             menu.add(getString(R.string.buttonProfile))
