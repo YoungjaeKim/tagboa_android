@@ -86,7 +86,7 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
                     @Override
                     public void onFailure(String message) {
                         HomeActivity.ShowToast(VideoPlayerActivity.this, getString(R.string.errorDestinationVideoServerUnreachable), true);
-
+                        finishActivityWithFail();
                     }
                 });
             } catch (IllegalArgumentException e) {

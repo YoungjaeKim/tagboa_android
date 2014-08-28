@@ -2,6 +2,7 @@ package net.tagboa.app.net;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.util.Log;
 import org.w3c.dom.*;
 
@@ -11,6 +12,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Ebs 영상의 mp4 원본주소를 받아오기 위함.
@@ -35,9 +37,16 @@ public class YoutubeUrlResolver implements VideoUrlResolver {
         } catch (Exception e) {
             throw new IllegalArgumentException("invalid url format");
         }
-        String videoUrl= getUrlVideoRTSP(url);
 
-        if ("".equals(videoUrl))
+        String videoUrl = null;
+        try {
+            videoUrl = new ExcuteNetworkOperation().execute(url).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        if (!"".equals(videoUrl))
             handler.onSuccess(videoUrl);
         else
             handler.onFailure("video url empty");
@@ -113,5 +122,25 @@ public class YoutubeUrlResolver implements VideoUrlResolver {
             Log.e("Exception", ex.toString());
         }
         return id;
+    }
+
+    public class ExcuteNetworkOperation extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String videoUrl= getUrlVideoRTSP(params[0]);
+            return videoUrl;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+
+            super.onPostExecute(result);
+        }
     }
 }
