@@ -113,6 +113,9 @@ public class NewItemActivity extends BaseActivity implements TagCompletionView.T
                 return super.onOptionsItemSelected(item);
             }
 
+            if(tagboaItem == null)
+                return true;
+
             try {
                 TagboaApi.PostItem(NewItemActivity.this, tagboaItem, new JsonHttpResponseHandler() {
                     @Override

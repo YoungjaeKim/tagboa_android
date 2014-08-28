@@ -3,11 +3,6 @@ package net.tagboa.app.net;
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.w3c.dom.*;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -35,14 +30,14 @@ public class YoutubeUrlResolver implements VideoUrlResolver {
      * @param handler
      */
     public void getUrl(Context context, String url, final VideoUrlResponseHandler handler) {
-        Uri uri;
         try {
-            uri = Uri.parse(url);
+            Uri.parse(url);
         } catch (Exception e) {
             throw new IllegalArgumentException("invalid url format");
         }
-        String videoUrl = getUrlVideoRTSP(url);
-        if("".equals(videoUrl))
+        String videoUrl= getUrlVideoRTSP(url);
+
+        if ("".equals(videoUrl))
             handler.onSuccess(videoUrl);
         else
             handler.onFailure("video url empty");
@@ -61,6 +56,8 @@ public class YoutubeUrlResolver implements VideoUrlResolver {
             String gdy = "http://gdata.youtube.com/feeds/api/videos/";
             DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             String id = extractYoutubeId(urlYoutube);
+            if ("".equals(id))
+                throw new IllegalArgumentException("youtube id detection error");
             URL url = new URL(gdy + id);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             Document doc = documentBuilder.parse(connection.getInputStream());
@@ -104,6 +101,7 @@ public class YoutubeUrlResolver implements VideoUrlResolver {
                     String[] param1 = row.split("=");
                     if (param1[0].equals("v")) {
                         id = param1[1];
+                        break;
                     }
                 }
             } else {

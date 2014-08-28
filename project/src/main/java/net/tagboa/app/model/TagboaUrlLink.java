@@ -13,11 +13,11 @@ public class TagboaUrlLink {
 	/// <summary>
 	/// URL 주소값
 	/// </summary>
-	public String Address;
+	public String Address = "";
 	/// <summary>
 	/// 링크 상태
 	/// </summary>
-	public TagboaUrlLinkStatus Status;
+	public TagboaUrlLinkStatus Status = TagboaUrlLinkStatus.Normal;
 	/// <summary>
 	/// 최근 링크 상태 확인 날짜
 	/// </summary>
@@ -25,11 +25,11 @@ public class TagboaUrlLink {
 	/// <summary>
 	/// 비공개 여부
 	/// </summary>
-	public Boolean IsHidden;
+	public Boolean IsHidden = false;
 	/// <summary>
 	/// 간단 소개말
 	/// </summary>
-	public String Note;
+	public String Note = "";
 
 	public JSONObject toJson() throws JSONException {
 		JSONObject jsonObject = new JSONObject();

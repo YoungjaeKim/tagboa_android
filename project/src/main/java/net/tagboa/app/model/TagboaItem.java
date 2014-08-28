@@ -77,10 +77,10 @@ public class TagboaItem {
 		if (Links == null || Links.size() == 0)
 			jsonObject.put("Links", new JSONArray());
 		else {
-			JSONArray jsonTopics = new JSONArray();
+			JSONArray jsonLinks = new JSONArray();
 			for (TagboaUrlLink link : Links)
-				jsonTopics.put(link.toJson());
-			jsonObject.put("Links", jsonTopics);
+				jsonLinks.put(link.toJson());
+			jsonObject.put("Links", jsonLinks);
 		}
 		return jsonObject;
 	}

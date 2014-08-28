@@ -113,7 +113,7 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
             return null;
         if (url.contains("ebs.co.kr/"))
             return new EbsUrlResolver();
-        if (url.contains("youtu.be/"))
+        if (url.contains("youtu.be/") || url.contains("youtube.com/"))
             return new YoutubeUrlResolver();
         return null;
     }
