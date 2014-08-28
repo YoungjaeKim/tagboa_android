@@ -16,3 +16,5 @@ TagBoa (태그보아)
  - 개발: 김영재 (youngjae.kim@gmail.com), 나훈희 (nuts03@gmail.com)
  - 디자인: 이상선 (indend007@gmail.com)
  
+# 알파버전 다운로드 주소 (초대한 인원 외엔 사용불가)
+ - https://play.google.com/apps/testing/net.tagboa.app
