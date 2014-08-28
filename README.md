@@ -3,6 +3,8 @@ TagBoa (태그보아)
 
 태그보아는 태그 기반 교육용 EBS 지식채널 큐래이션 안드로이드 앱입니다.
 
+# 프로젝트 관리
+ - PivotalTracker: https://www.pivotaltracker.com/n/projects/1154246
 # 개발환경
  - IntelliJ 13
  - 안드로이드 개발 권장환경인 gradle 로 리소스 관리.
